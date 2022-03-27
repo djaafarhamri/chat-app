@@ -1,5 +1,4 @@
 import image from "../assets/avatar.jpeg";
-import empty from "../assets/empty.png";
 import "./message.css";
 
 const Message = (props) => {

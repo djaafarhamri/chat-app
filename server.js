@@ -10,6 +10,7 @@ const socket = require("socket.io");
 const path = require("path");
 const mongoose = require("mongoose");
 const PORT = process.env.PORT || 4000;
+const userRoute = require("./Routes/userRoute");
 
 
 mongoose
@@ -56,3 +57,5 @@ const io = socket(server, {
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
+
+app.use(userRoute);
