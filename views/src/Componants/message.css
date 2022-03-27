@@ -1,11 +1,83 @@
 .message {
-    display: flex;
-    align-items: center;
+  width: 100%;
+}
+.message-received {
+  margin-left: 50px;
+  display: flex;
+  align-items: center;
+}
+.message-received-resent {
+  margin-top: -1px;
+  display: flex;
+  align-items: center;
 }
 
-.message img {
-    margin: 10px 5px;
-    border-radius: 50%;
-    height: 40px;
-    width: 40px;
+.message-received img {
+  margin: 0px 5px;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+}
+
+.message-received-resent img {
+  margin: 0px 5px;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+}
+.message-sent {
+  display: flex;
+  align-items: center;
+  margin-right: 50px;
+  justify-content: flex-end;
+}
+.message-sent-resent {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.message-sent h4 {
+  max-width: 60%;
+  padding: 10px;
+  background-color: #ff4b2b;
+  border-radius: 15px 0px 0px 15px;
+  color: aliceblue;
+}
+
+.message-received h4 {
+  max-width: 60%;
+  padding: 10px;
+  background-color: #003cff;
+  border-radius: 0px 15px 15px 0px;
+  color: aliceblue;
+}
+
+.message-sent img {
+  margin: 0px 5px;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+}
+.message-sent-resent h4 {
+  max-width: 60%;
+  padding: 10px;
+  background-color: #ff4b2b;
+  border-radius: 15px 0px 15px 15px;
+  color: aliceblue;
+}
+
+.message-received-resent h4 {
+  max-width: 60%;
+  padding: 10px;
+  background-color: #003cff;
+  border-radius: 0px 15px 15px 15px;
+  color: aliceblue;
+}
+
+.message-sent-resent img {
+  margin: 0px 5px;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
 }
