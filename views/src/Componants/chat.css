@@ -36,6 +36,18 @@
   transition: transform 80ms ease-in;
 }
 
+.messages {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+.messages-container {
+    height: 100%;
+    position: relative;
+    overflow-y: scroll;
+}
+
 /* media queris 768 px */
 @media screen and (max-width: 768px) {
   .chat {

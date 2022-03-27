@@ -1,6 +1,8 @@
 .home {
     display: grid;
     grid-template-columns: 2fr 3fr 2fr;
+    height: 100%;
+    overflow: hidden;
 }
 
 /* media queris 1024 px */
