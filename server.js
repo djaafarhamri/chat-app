@@ -11,6 +11,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const PORT = process.env.PORT || 4000;
 
+
 mongoose
   .connect("mongodb://localhost:27017/chat-app", {
     useNewUrlParser: true,
