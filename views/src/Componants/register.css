@@ -61,7 +61,7 @@
   border-color: #ffffff;
 }
 
-.register form {
+.register .form {
   background-color: #ffffff;
   display: flex;
   align-items: center;
