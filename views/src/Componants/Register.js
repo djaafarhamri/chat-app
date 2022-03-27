@@ -11,19 +11,43 @@ const Register = () => {
   const navigate = useNavigate();
 
   const sign_up = () => {
-    axios.post("http://localhost:4000/sign_up", { username, email, password })
-      .then(res => { navigate("/sign-in"); })
-      .catch(err => { setError(err.message) });
-  }
+    axios
+      .post("http://localhost:4000/sign_up", { username, email, password })
+      .then((res) => {
+        navigate("/sign-in");
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  };
   return (
-    <div className="register">
+    <div
+      className="register"
+      onKeyPress={(e) => {
+        if (e.key === "Enter") {
+          sign_up();
+        }
+      }}
+    >
       <div className="container" id="container">
         <div className="form-container sign-up-container">
           <div className="form">
             <h1>Create Account</h1>
-            <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
-            <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-            <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+            <input
+              type="text"
+              placeholder="Username"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <button onClick={sign_up}>Sign Up</button>
             <p>
               Already have an account <Link to="/sign-in">Sign in</Link>
