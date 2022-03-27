@@ -12,6 +12,9 @@ const Login = () => {
             <input type="password" placeholder="Password" />
             <Link to="/reset">Forgot your password?</Link>
             <button>Sign In</button>
+            <p>
+              don't have an account yet <Link to="/sign-up">Sign up</Link>
+            </p>
           </form>
         </div>
       </div>
