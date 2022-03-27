@@ -1,0 +1,12 @@
+.chat {
+  height: 100vh;
+  border-right: 1px solid;
+  grid-column: 2/3;
+}
+/* media queris 768 px */
+@media screen and (max-width: 768px) {
+  .chat {
+      border: 0;
+    grid-column: 1/2;
+  }
+}

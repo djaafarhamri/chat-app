@@ -1,0 +1,14 @@
+.discover {
+    height: 100vh;
+    width: auto;
+    grid-column: 3/4;
+}
+ /* media queris 1024 px */
+@media screen and (max-width: 1024px) {
+    .discover {
+        position: absolute;
+        width: 100%;
+        z-index: 100;
+        display: none;
+    }
+}

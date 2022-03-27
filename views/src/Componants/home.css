@@ -1,0 +1,17 @@
+.home {
+    display: grid;
+    grid-template-columns: 2fr 3fr 2fr;
+}
+
+/* media queris 1024 px */
+@media screen and (max-width: 1024px) {
+    .home {
+        grid-template-columns: 5fr 6fr;
+    }
+}
+/* media queris 768 px */
+@media screen and (max-width: 768px) {
+    .home {
+        grid-template-columns: 1fr;
+    }
+}
