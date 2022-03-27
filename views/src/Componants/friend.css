@@ -1,0 +1,20 @@
+.friend {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.friend:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.friend img {
+    margin: 10px 5px;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.friend h3 {
+    font-weight: 500;
+}
