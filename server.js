@@ -1,5 +1,7 @@
+const cookieSession = require("cookie-session");
 const express = require("express");
 const app = express();
+const passport = require("passport");
 const dotenv = require("dotenv");
 dotenv.config();
 const http = require("http");
@@ -28,7 +30,7 @@ mongoose
     throw new Error(err);
   });
 
-app.use(cors())
+// app.use(cors())
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.get("Origin") || "*");
@@ -49,6 +51,17 @@ app.use((req, res, next) => {
 app.use(cookieParser());
 app.use(express.static("public"));
 app.use(express.json());
+app.use(
+  cookieSession({
+    name: "chat-user",
+    keys: ["key2"],
+
+    // Cookie Options
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 const io = socket(server, {
   cors: {

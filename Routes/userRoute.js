@@ -1,4 +1,3 @@
-const cookieSession = require("cookie-session");
 const { Router } = require("express");
 const User = require("../models/User");
 const userController = require("../Controllers/userController");
@@ -14,17 +13,6 @@ passport.deserializeUser((user, cb) => {
   cb(null, user);
 });
 
-router.use(
-  cookieSession({
-    name: "khedma-user",
-    keys: ["key1"],
-
-    // Cookie Options
-    maxAge: 24 * 60 * 60 * 1000, // 24 hours
-  })
-);
-router.use(passport.initialize());
-router.use(passport.session());
 
 passport.use(
   new LocalStrategy(function verify(username, password, cb) {
@@ -55,6 +43,7 @@ router.post(
 );
 router.get("/success_login", userController.success_login);
 router.get("/failed_login", userController.failed_login);
+router.get("/check-user", userController.check_user);
 // router.get("/logout", userController.logout_get);
 
 module.exports = router;

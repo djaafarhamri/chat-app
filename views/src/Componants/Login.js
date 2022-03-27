@@ -14,7 +14,7 @@ const Login = () => {
       .post(
         "http://localhost:4000/sign_in",
         { username, password },
-        { useCredentials: true }
+        { withCredentials: true }
       )
       .then((res) => {
         if (res.data === "error") return setError("error");
