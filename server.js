@@ -28,6 +28,8 @@ mongoose
     throw new Error(err);
   });
 
+app.use(cors())
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.get("Origin") || "*");
   res.header("Access-Control-Allow-Credentials", "true");

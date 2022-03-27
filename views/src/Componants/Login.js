@@ -10,17 +10,18 @@ const Login = () => {
   const navigate = useNavigate();
 
   const sign_in = () => {
-    axios.post("http://localhost:4000/sign_in", {useCredentials: true})
+    axios.post("http://localhost:4000/sign_in", {username, password}, {useCredentials: true})
     .then(res => {
-      if (res.data === 'error') return setError('error');)})
+      if (res.data === 'error') return setError('error');
       return navigate("/");
-    .catch(err => {setError(err.message)})
+    })
+    .catch(err => {setError(err.message)});
   }
   return (
     <div className="login">
       <div className="container">
         <div className="form-container sign-in-container">
-          <form action="#">
+          <div className="form">
             <h1>Sign in</h1>
             <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
             <input type="password" placeholder="Password" onChange={(e) => {setPassword(e.target.value)}} />
@@ -29,7 +30,7 @@ const Login = () => {
             <p>
               don't have an account yet <Link to="/sign-up">Sign up</Link>
             </p>
-          </form>
+          </div>
         </div>
       </div>
     </div>
