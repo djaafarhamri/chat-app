@@ -46,4 +46,13 @@ router.get("/failed_login", userController.failed_login);
 router.get("/check-user", userController.check_user);
 router.get("/logout", userController.logout);
 
+//* Friends 
+
+router.get("/send_request", userController.send_request);
+router.get("/accept_request", userController.accept_request);
+router.get("/decline_request", userController.decline_request);
+router.get("/get_friends", userController.get_friends);
+router.get("/get_friendRequests", userController.get_friendRequests);
+
+
 module.exports = router;

@@ -32,3 +32,56 @@ module.exports.logout = (req, res) => {
   req.logout();
   res.status(200).json("logout");
 };
+
+module.exports.send_request = async (req, res) => {
+  const { username, friend } = req.body;
+  await User.findOneAndUpdate(
+    { username },
+    { $push: { friendRequests: friend } },
+    { new: true }
+  );
+  res.status(200)
+};
+
+module.exports.accept_request = async (req, res) => {
+  const { username, friend } = req.body;
+  await User.findOneAndUpdate(
+    { username },
+    { $push: { friends: friend } },
+    { new: true }
+  );
+  await User.findOneAndUpdate(
+    { friend },
+    { $push: { friends: username } },
+    { new: true }
+  );
+  await User.findOneAndUpdate(
+    { username },
+    { $pull: { friendRequests: friend } },
+    { new: true }
+  );
+
+  res.status(200)
+};
+
+module.exports.decline_request = async (req, res) => {
+  const { username, friend } = req.body;
+  await User.findOneAndUpdate(
+    { username },
+    { $pull: { friendRequests: friend } },
+    { new: true }
+  );
+  res.status(200)
+};
+
+module.exports.get_friends = async (req, res) => {
+  const { username } = req.params.username;
+  const user = await User.findOne({ username });
+  res.status(200).json({ friends: user.friends });  
+};
+
+module.exports.get_friendRequests = async (req, res) => {
+  const { username } = req.params.username;
+  const user = await User.findOne({ username });
+  res.status(200).json({ friendRequests: user.friendRequests });  
+};
