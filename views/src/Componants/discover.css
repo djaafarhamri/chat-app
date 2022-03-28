@@ -2,7 +2,55 @@
     height: 100vh;
     width: auto;
     grid-column: 3/4;
+    display: flex;
+    flex-direction: column;
 }
+
+.discover .options {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.discover .options button {
+    text-align: start;
+    cursor: pointer;
+    width: 90%;
+    border: 0;
+    border-bottom: 1px solid;
+    padding: 10px 10px 10px 30px;
+    font-size: 16px;
+    margin: 8px auto 0 auto;
+}
+
+.discover input {
+    width: 80%;
+    border: 1px solid;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.discover .profile-info {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    width: 100%;
+}
+
+.discover .profile-info img {
+    margin-top: 30px;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+}
+.discover .users {
+    width: 100%;
+    margin-top: 20px;
+}
+
  /* media queris 1024 px */
 @media screen and (max-width: 1024px) {
     .discover {

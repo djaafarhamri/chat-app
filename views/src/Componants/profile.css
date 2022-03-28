@@ -6,12 +6,7 @@
     grid-column: 1/2;
 }
 
-.profile-info img {
-    margin-top: 30px;
-    border-radius: 50%;
-    height: 100px;
-    width: 100px;
-}
+
 .chats {
     display: flex;
     align-items: flex-start;
