@@ -2,13 +2,11 @@ import Chat from './Chat';
 import Discover from './Discover';
 import './home.css'
 import Profile from './Profile';
+import { UserContext } from '../contexts/user';
+import { useContext } from 'react';
 
 const Home = () => {
-    const user = {
-        avatar: 'C:/Users/EliteBooK/Desktop/projects/chat-app/uploads/avatar.jpeg',
-        username: 'John',
-        email: 'john@gmail.com',
-    }
+    const [user, setUser] = useContext(UserContext);
     const friend = {
         avatar: 'C:/Users/EliteBooK/Desktop/projects/chat-app/uploads/avatar.jpeg',
         username: 'Felix',

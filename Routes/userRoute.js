@@ -48,11 +48,12 @@ router.get("/logout", userController.logout);
 
 //* Friends 
 
-router.get("/send_request", userController.send_request);
-router.get("/accept_request", userController.accept_request);
-router.get("/decline_request", userController.decline_request);
-router.get("/get_friends", userController.get_friends);
-router.get("/get_friendRequests", userController.get_friendRequests);
+router.post("/send_request", userController.send_request);
+router.post("/accept_request", userController.accept_request);
+router.post("/decline_request", userController.decline_request);
+router.get("/get_friends/:username", userController.get_friends);
+router.get("/get_friendRequests/:username", userController.get_friendRequests);
+router.get("/search_users/:username", userController.search_users);
 
 
 module.exports = router;

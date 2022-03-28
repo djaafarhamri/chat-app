@@ -1,13 +1,15 @@
 import "./login.css";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../contexts/user";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [user, setUser] = useContext(UserContext);
 
   const sign_in = () => {
     axios
@@ -18,6 +20,7 @@ const Login = () => {
       )
       .then((res) => {
         if (res.data === "error") return setError("error");
+        setUser(res.data.user);
         return navigate("/");
       })
       .catch((err) => {

@@ -35,6 +35,7 @@ module.exports.logout = (req, res) => {
 
 module.exports.send_request = async (req, res) => {
   const { username, friend } = req.body;
+  console.log(username, friend);
   await User.findOneAndUpdate(
     { username },
     { $push: { friendRequests: friend } },
@@ -75,13 +76,21 @@ module.exports.decline_request = async (req, res) => {
 };
 
 module.exports.get_friends = async (req, res) => {
-  const { username } = req.params.username;
+  const { username } = req.params;
   const user = await User.findOne({ username });
   res.status(200).json({ friends: user.friends });  
 };
 
 module.exports.get_friendRequests = async (req, res) => {
-  const { username } = req.params.username;
+  const { username } = req.params;
   const user = await User.findOne({ username });
   res.status(200).json({ friendRequests: user.friendRequests });  
+};
+// search with regex
+module.exports.search_users = async (req, res) => {
+  const { username } = req.params;
+  if (!username) return res.status(400);
+  const user = await User.find({ username: { $regex: username, $options: "i" } });
+  if (!user) return res.status(400);
+  res.status(200).json({ users: user });
 };
