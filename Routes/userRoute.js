@@ -44,6 +44,6 @@ router.post(
 router.get("/success_login", userController.success_login);
 router.get("/failed_login", userController.failed_login);
 router.get("/check-user", userController.check_user);
-// router.get("/logout", userController.logout_get);
+router.post("/logout", userController.logout);
 
 module.exports = router;

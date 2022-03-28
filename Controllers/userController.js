@@ -27,3 +27,8 @@ module.exports.check_user = (req, res) => {
     res.status(400).json("error");
   }
 };
+
+module.exports.logout = (req, res) => {
+  req.logout();
+  res.status(200).json("logged out");
+};
