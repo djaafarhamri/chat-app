@@ -1,8 +1,17 @@
 import "./profile.css";
 import image from "../assets/avatar.jpeg";
 import Friend from "./Friend";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 const Profile = (props) => {
+  const navigate = useNavigate();
+  const logout = async () => {
+    await axios.get("http://localhost:4000/logout", {withCredentials: true})
+    .then((res) => {
+      navigate("/sign-in");
+    }).catch((err) => {console.log(err)});
+  }
   const friends = [
     {
       avatar:
@@ -30,6 +39,7 @@ const Profile = (props) => {
         {/* <img src={props.user.avatar} alt="" /> */}
         <img src={image} alt="" />
         <h3>{props.user.username}</h3>
+        <button onClick={logout} >Log out</button>
       </div>
       <div className="chats">
         <h1>Chats</h1>

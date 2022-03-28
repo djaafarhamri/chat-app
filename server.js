@@ -14,6 +14,7 @@ const mongoose = require("mongoose");
 const PORT = process.env.PORT || 4000;
 const userRoute = require("./Routes/userRoute");
 
+const session = require("express-session");
 
 mongoose
   .connect("mongodb://localhost:27017/chat-app", {
@@ -51,15 +52,31 @@ app.use((req, res, next) => {
 app.use(cookieParser());
 app.use(express.static("public"));
 app.use(express.json());
-app.use(
-  cookieSession({
-    name: "chat-user",
-    keys: ["key2"],
+// app.use(
+//   session({
+//     name: "chat-user",
+//     keys: ["key2"],
 
-    // Cookie Options
-    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+//     // Cookie Options
+//     maxAge: 24 * 60 * 60 * 1000, // 24 hours
+//   })
+// );
+app.use(
+  session({
+    secret: "Any normal Word", //decode or encode session
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 2 * 60 * 1000,
+    },
   })
 );
+
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+app.use(cors(corsOptions));
 app.use(passport.initialize());
 app.use(passport.session());
 

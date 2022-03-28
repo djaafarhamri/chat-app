@@ -30,5 +30,5 @@ module.exports.check_user = (req, res) => {
 
 module.exports.logout = (req, res) => {
   req.logout();
-  res.status(200).json("logged out");
+  res.status(200).json("logout");
 };
