@@ -8,7 +8,7 @@ const User = (props) => {
     const add = async () => {
         console.log('add');
         await axios.post('http://localhost:4000/send_request', {
-            username: props.user.username,
+            user: props.user,
             friend: props.friend
         }).then((res) => {
             console.log(res.data);

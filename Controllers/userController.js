@@ -34,18 +34,23 @@ module.exports.logout = (req, res) => {
 };
 
 module.exports.send_request = async (req, res) => {
-  const { username, friend } = req.body;
+  const { user, friend } = req.body;
   try {
-    await User.findOneAndUpdate(
-      { username },
-      {
-        $push: {
-          friendRequests: { username: friend.username, image: friend.image },
+    const userD = await User.findOne({ username: friend.username });
+    if (userD.friendRequests.some(e => e.username === user.username)) {
+      res.status(400).json("already sent");
+    }
+    else {
+      await User.findOneAndUpdate(
+        { username: friend.username },
+        {
+          $addToSet: {
+            friendRequests: { username: user.username, image: user.image },
+          },
         },
-      },
-      { new: true }
-    );
-    console.log(username,  friend);
+        { new: true }
+      );
+    }
   } catch (error) {
     console.log(error);
     res.status(400).json(error);
@@ -55,21 +60,17 @@ module.exports.send_request = async (req, res) => {
 
 module.exports.accept_request = async (req, res) => {
   const { username, friend } = req.body;
-  console.log(" username: ", username, " friend: ", friend);
   try {
-    console.log(" friend: ", friend);
     await User.findOneAndUpdate(
       { username },
-      { $push: { friends: friend } },
+      { $addToSet: { friends: friend } },
       { new: true }
     );
-    console.log(" friend: ", friend);
     await User.findOneAndUpdate(
-      { username: friend },
-      { $push: { friends: username } },
+      { username: friend.username },
+      { $addToSet: { friends: username } },
       { new: true }
     );
-    console.log(" friend: ", friend);
     await User.findOneAndUpdate(
       { username },
       { $pull: { friendRequests: friend } },
@@ -100,7 +101,6 @@ module.exports.get_friends = async (req, res) => {
 
 module.exports.get_friendRequests = async (req, res) => {
   const { username } = req.params;
-  console.log(username);
   const user = await User.findOne({ username });
   res.status(200).json({ friendRequests: user.friendRequests });
 };

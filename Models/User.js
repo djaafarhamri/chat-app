@@ -27,7 +27,9 @@ const userSchema = mongoose.Schema(
     },
     friends: [
       {
-        username: { type: String },
+        username: {
+          type: String,
+        },
         image: {
           type: String,
           default: path.join(__dirname, "uploads", "avatar.jpeg"),
@@ -36,7 +38,10 @@ const userSchema = mongoose.Schema(
     ],
     friendRequests: [
       {
-        username: { type: String },
+        username: {
+          type: String,
+          unique: true,
+        },
         image: {
           type: String,
           default: path.join(__dirname, "uploads", "avatar.jpeg"),
