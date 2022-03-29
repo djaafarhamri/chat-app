@@ -55,5 +55,8 @@ router.get("/get_friends/:username", userController.get_friends);
 router.get("/get_friendRequests/:username", userController.get_friendRequests);
 router.get("/search_users/:username", userController.search_users);
 
+//* Profile
+
+router.post("/change_username", userController.change_username);
 
 module.exports = router;

@@ -5,11 +5,13 @@ import User from "./User";
 import image from "../assets/avatar.jpeg";
 import { useNavigate } from "react-router-dom";
 import ChangeName from "./ChangeName";
+import FindFriends from "./FindFriends";
 
 const Discover = (props) => {
   //setShowChangeName
   const [showChangeName, setShowChangeName] = useState(false);
-  const [friends, setFriends] = useState([]);
+  //showfind
+  const [showFind, setShowFind] = useState(false);
   const [friendRequests, setFriendRequests] = useState([]);
   const navigate = useNavigate();
   const logout = async () => {
@@ -22,20 +24,11 @@ const Discover = (props) => {
         console.log(err);
       });
   };
-  const search = async (username) => {
-    await axios
-      .get(`http://localhost:4000/search_users/${username}`)
-      .then((res) => {
-        setFriends(res.data.users);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
+ 
   return (
     <div className="discover">
       {showChangeName && <ChangeName setShowChangeName={setShowChangeName} />}
+      {showFind && <FindFriends setShowFind={setShowFind} />}
       <div className="profile-info">
         {/* <img src={props.user.avatar} alt="" /> */}
         <img src={image} alt="" />
@@ -54,16 +47,13 @@ const Discover = (props) => {
         }}>Change username</button>
         <button>Change profile picture</button>
         <button>Frriends List</button>
-        <button>Find friends</button>
+        <button onClick={() => {
+          setShowFind(true);
+        }}>Find Friends</button> 
         <button>Friend requests</button>
         <button onClick={logout}>Logout</button>
       </div>
-      <div className="users">
-        {friends &&
-          friends.map((friend) => {
-            return <User user={props.user} friend={friend} />;
-          })}
-      </div>
+     
     </div>
   );
 };

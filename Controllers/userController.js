@@ -94,3 +94,14 @@ module.exports.search_users = async (req, res) => {
   if (!user) return res.status(400);
   res.status(200).json({ users: user });
 };
+
+//change username
+module.exports.change_username = async (req, res) => {
+  const { username, currentUsername } = req.body;
+  const user = await User.findOneAndUpdate(
+    { username: currentUsername },
+    { username },
+    { new: true }
+  );
+  res.status(200).json({ user });
+}
