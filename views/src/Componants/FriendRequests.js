@@ -17,11 +17,12 @@ const FriendRequests = (props) => {
             .get(`http://localhost:4000/get_friendRequests/${user.username}`)
             .then((res) => {
                 setFriendRequests(res.data.friendRequests);
+                setRender(!render);
             })
             .catch((err) => {
                 console.log(err);
             });
-    }, [user]);
+    }, [user, render]);
     useEffect(() => {
       getFriendRequests();
     
