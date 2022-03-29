@@ -9,7 +9,7 @@ const User = (props) => {
         console.log('add');
         await axios.post('http://localhost:4000/send_request', {
             username: props.user.username,
-            friend: props.friend.username
+            friend: props.friend
         }).then((res) => {
             console.log(res.data);
         }).catch((err) => {

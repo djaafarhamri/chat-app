@@ -11,7 +11,7 @@ const FriendRequest = (props) => {
     await axios
       .post(`http://localhost:4000/accept_request`, {
         username: user.username,
-        friend,
+        friend: friend.username,
       })
       .then((res) => {
         props.setRender(!props.render);
@@ -25,7 +25,7 @@ const FriendRequest = (props) => {
     await axios
       .post(`http://localhost:4000/decline_request`, {
         username: user.username,
-        friend,
+        friend: friend.username,
       })
       .then((res) => {
         props.setRender(!props.render);

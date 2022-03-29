@@ -6,8 +6,8 @@ const path = require("path");
 const userSchema = mongoose.Schema(
   {
     image: {
-        type: String,
-        default: path.join(__dirname, "uploads", "avatar.jpeg")
+      type: String,
+      default: path.join(__dirname, "uploads", "avatar.jpeg"),
     },
     email: {
       type: String,
@@ -25,12 +25,24 @@ const userSchema = mongoose.Schema(
       required: [true, "please enter a password"],
       minlength: [6, "minimum password length is 6 characters"],
     },
-    friends: {
-      type: [String],
-    },
-    friendRequests: {
-      type: [String],
-    },
+    friends: [
+      {
+        username: { type: String },
+        image: {
+          type: String,
+          default: path.join(__dirname, "uploads", "avatar.jpeg"),
+        },
+      },
+    ],
+    friendRequests: [
+      {
+        username: { type: String },
+        image: {
+          type: String,
+          default: path.join(__dirname, "uploads", "avatar.jpeg"),
+        },
+      },
+    ],
   },
   { collection: "users" }
 );
