@@ -1,0 +1,18 @@
+.friend-request {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+
+.friend-request img {
+    margin: 10px 5px;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.friend-request h3 {
+    font-weight: 500;
+}

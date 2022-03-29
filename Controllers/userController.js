@@ -46,21 +46,30 @@ module.exports.send_request = async (req, res) => {
 
 module.exports.accept_request = async (req, res) => {
   const { username, friend } = req.body;
-  await User.findOneAndUpdate(
-    { username },
-    { $push: { friends: friend } },
-    { new: true }
-  );
-  await User.findOneAndUpdate(
-    { friend },
-    { $push: { friends: username } },
-    { new: true }
-  );
-  await User.findOneAndUpdate(
-    { username },
-    { $pull: { friendRequests: friend } },
-    { new: true }
-  );
+  console.log(" username: ", username, " friend: ", friend);
+  try {
+    console.log(" friend: ", friend);
+    await User.findOneAndUpdate(
+      { username },
+      { $push: { friends: friend } },
+      { new: true }
+      );
+      console.log(" friend: ", friend);
+      await User.findOneAndUpdate(
+        { username: friend },
+        { $push: { friends: username } },
+        { new: true }
+        );
+        console.log(" friend: ", friend);
+    await User.findOneAndUpdate(
+      { username },
+      { $pull: { friendRequests: friend } },
+      { new: true }
+    );
+    
+  } catch (error) {
+    res.status(400).json(error);
+  }
 
   res.status(200)
 };
@@ -83,6 +92,7 @@ module.exports.get_friends = async (req, res) => {
 
 module.exports.get_friendRequests = async (req, res) => {
   const { username } = req.params;
+  console.log(username);
   const user = await User.findOne({ username });
   res.status(200).json({ friendRequests: user.friendRequests });  
 };
