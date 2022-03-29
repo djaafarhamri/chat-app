@@ -4,8 +4,11 @@ import axios from "axios";
 import User from "./User";
 import image from "../assets/avatar.jpeg";
 import { useNavigate } from "react-router-dom";
+import ChangeName from "./ChangeName";
 
 const Discover = (props) => {
+  //setShowChangeName
+  const [showChangeName, setShowChangeName] = useState(false);
   const [friends, setFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
   const navigate = useNavigate();
@@ -32,6 +35,7 @@ const Discover = (props) => {
 
   return (
     <div className="discover">
+      {showChangeName && <ChangeName setShowChangeName={setShowChangeName} />}
       <div className="profile-info">
         {/* <img src={props.user.avatar} alt="" /> */}
         <img src={image} alt="" />
@@ -45,7 +49,9 @@ const Discover = (props) => {
         }}
       /> */}
       <div className="options">
-        <button>Change username</button>
+        <button onClick={() => {
+          setShowChangeName(true);
+        }}>Change username</button>
         <button>Change profile picture</button>
         <button>Frriends List</button>
         <button>Find friends</button>
