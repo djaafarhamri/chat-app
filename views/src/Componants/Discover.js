@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import ChangeName from "./ChangeName";
 import FindFriends from "./FindFriends";
 import FriendRequests from "./FriendRequests";
+import FriendsList from "./FriendsList";
 
 const Discover = (props) => {
   //setShowChangeName
@@ -15,7 +16,8 @@ const Discover = (props) => {
   const [showFind, setShowFind] = useState(false);
   //show requests
   const [showRequests, setShowRequests] = useState(false);
-  const [friendRequests, setFriendRequests] = useState([]);
+  //show friends list
+  const [showList, setShowList] = useState(false);
   const navigate = useNavigate();
   const logout = async () => {
     await axios
@@ -33,6 +35,7 @@ const Discover = (props) => {
       {showChangeName && <ChangeName setShowChangeName={setShowChangeName} />}
       {showFind && <FindFriends setShowFind={setShowFind} />}
       {showRequests && <FriendRequests setShowRequests={setShowRequests} />}
+      {showList && <FriendsList setShowList={setShowList} />}
       <div className="profile-info">
         {/* <img src={props.user.avatar} alt="" /> */}
         <img src={image} alt="" />
@@ -54,7 +57,9 @@ const Discover = (props) => {
           Change username
         </button>
         <button>Change profile picture</button>
-        <button>Frriends List</button>
+        <button onClick={() => {setShowList(true)}}>
+          Frriends List
+          </button>
         <button
           onClick={() => {
             setShowFind(true);

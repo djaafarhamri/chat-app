@@ -113,6 +113,25 @@ module.exports.decline_request = async (req, res) => {
   // res.status(200).json({ friend });
 };
 
+module.exports.delete_friend = async (req, res) => {
+  const { user, friend } = req.body;
+  console.log("delet request: ", user, friend);
+  try {
+    await User.findOneAndUpdate(
+      { username: user.username },
+      { $pull: { friends: friend } },
+    );
+    await User.findOneAndUpdate(
+      { username: friend.username },
+      { $pull: { friends: { username: user.username, image: user.image, _id: user._id } } },
+    );
+    res.status(200).json({ friend });
+  } catch (error) {
+    res.status(400).json(error);
+  }
+  // res.status(200).json({ friend });
+};
+
 module.exports.get_friends = async (req, res) => {
   const { username } = req.params;
   const user = await User.findOne({ username });
