@@ -2,6 +2,7 @@ import image from '../assets/avatar.jpeg';
 import './friend.css';
 
 const Friend = (props) => {
+    console.log("props: ",props);
     return ( 
         <div className="friend">
             <img src={image} alt="" />

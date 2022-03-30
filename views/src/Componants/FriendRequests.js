@@ -12,14 +12,15 @@ const FriendRequests = (props) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/get_friendRequests/${user.username}`)
-      .then((res) => {
-        setFriendRequests(res.data.friendRequests);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+    .get(`http://localhost:4000/get_friendRequests/${user.username}`)
+    .then((res) => {
+      setFriendRequests(res.data.friendRequests);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+    
+    console.log("get render: ", render);
     return () => {
       // cleanup
     };

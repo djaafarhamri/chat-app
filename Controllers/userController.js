@@ -37,10 +37,11 @@ module.exports.send_request = async (req, res) => {
   const { user, friend } = req.body;
   try {
     const userD = await User.findOne({ username: friend.username });
-    if (userD.friendRequests.some(e => e.username === user.username)) {
+    if (userD.friendRequests.some((e) => e.username === user.username)) {
       res.status(400).json("already sent");
-    }
-    else {
+    } else if (userD.friends.some((e) => e.username === user.username)) {
+      res.status(400).json("already sent 2");
+    } else {
       await User.findOneAndUpdate(
         { username: friend.username },
         {
@@ -59,23 +60,34 @@ module.exports.send_request = async (req, res) => {
 };
 
 module.exports.accept_request = async (req, res) => {
-  const { username, friend } = req.body;
+  const { user, friend } = req.body;
+  console.log("username: ", user);
+  console.log("friend: ", friend);
   try {
     await User.findOneAndUpdate(
-      { username },
+      { username: user.username },
       { $addToSet: { friends: friend } },
       { new: true }
     );
     await User.findOneAndUpdate(
       { username: friend.username },
-      { $addToSet: { friends: username } },
+      {
+        $addToSet: {
+          friends: {
+            username: user.username,
+            image: user.image,
+            _id: user._id,
+          },
+        },
+      },
       { new: true }
     );
     await User.findOneAndUpdate(
-      { username },
+      { username: user.username },
       { $pull: { friendRequests: friend } },
       { new: true }
     );
+    res.status(200).json({ friend });
   } catch (error) {
     res.status(400).json(error);
   }
@@ -84,13 +96,21 @@ module.exports.accept_request = async (req, res) => {
 };
 
 module.exports.decline_request = async (req, res) => {
-  const { username, friend } = req.body;
-  await User.findOneAndUpdate(
-    { username },
-    { $pull: { friendRequests: friend } },
-    { new: true }
-  );
-  res.status(200);
+  const { user, friend } = req.body;
+  console.log("decline request: ", user, friend);
+  try {
+    console.log("test 1");
+    await User.findOneAndUpdate(
+      { username: user.username },
+      { $pull: { friendRequests: friend } },
+    );
+    console.log("test 2");
+    res.status(200).json({ friend });
+    console.log("test 3");
+  } catch (error) {
+    res.status(400).json(error);
+  }
+  // res.status(200).json({ friend });
 };
 
 module.exports.get_friends = async (req, res) => {

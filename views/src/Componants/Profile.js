@@ -1,28 +1,26 @@
 import "./profile.css";
 import Friend from "./Friend";
+import axios from "axios";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from '../contexts/user';
 
 const Profile = (props) => {
- 
-  const friends = [
-    {
-      avatar:
-        "C:/Users/EliteBooK/Desktop/projects/chat-app/uploads/avatar.jpeg",
-      username: "John",
-      email: "john@gmail.com",
-    },
-    {
-      avatar:
-        "C:/Users/EliteBooK/Desktop/projects/chat-app/uploads/avatar.jpeg",
-      username: "Felix",
-      email: "john@gmail.com",
-    },
-    {
-      avatar:
-        "C:/Users/EliteBooK/Desktop/projects/chat-app/uploads/avatar.jpeg",
-      username: "Marzia",
-      email: "john@gmail.com",
-    },
-  ];
+  const [user] = useContext(UserContext);
+  const [friends, setFriends] = useState([]); 
+  useEffect(() => {
+    axios
+      .get(`http://localhost:4000/get_friends/${user.username}`)
+      .then((res) => {
+        setFriends(res.data.friends);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+      return () => {
+        //
+      }
+  }, [user.username]);
+
 
   return (
     <div className="profile">

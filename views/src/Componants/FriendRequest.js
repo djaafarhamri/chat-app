@@ -9,9 +9,9 @@ const FriendRequest = (props) => {
   // accept friend request
   const accept = async (friend) => {
     await axios
-      .post(`http://localhost:4000/accept_request`, {
-        username: user.username,
-        friend: friend.username,
+    .post(`http://localhost:4000/accept_request`, {
+      user,
+        friend,
       })
       .then((res) => {
         props.setRender(!props.render);
@@ -19,20 +19,23 @@ const FriendRequest = (props) => {
       .catch((err) => {
         console.log(err);
       });
+      console.log("accept render: ", props.render);
   };
   // decline friend request
   const decline = async (friend) => {
     await axios
-      .post(`http://localhost:4000/decline_request`, {
-        username: user.username,
-        friend: friend.username,
-      })
-      .then((res) => {
-        props.setRender(!props.render);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    .post(`http://localhost:4000/decline_request`, {
+      user,
+      friend,
+    })
+    .then((res) => {
+      console.log("res: ", res);	
+      props.setRender(!props.render);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+    console.log("decline render: ", props.render);
   };
 
   return (
