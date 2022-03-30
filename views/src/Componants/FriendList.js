@@ -18,7 +18,6 @@ const FriendList = (props) => {
       .catch((err) => {
         console.log(err);
       });
-    console.log("delete render: ", props.render);
   };
   return (
     <div className="friend-list">

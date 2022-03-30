@@ -5,7 +5,7 @@ import "./friendRequest.css";
 import { UserContext } from "../contexts/user";
 
 const FriendRequest = (props) => {
-  const [user, setUser] = useContext(UserContext);
+  const [user] = useContext(UserContext);
   // accept friend request
   const accept = async (friend) => {
     await axios
@@ -19,7 +19,6 @@ const FriendRequest = (props) => {
       .catch((err) => {
         console.log(err);
       });
-      console.log("accept render: ", props.render);
   };
   // decline friend request
   const decline = async (friend) => {
@@ -29,13 +28,11 @@ const FriendRequest = (props) => {
       friend,
     })
     .then((res) => {
-      console.log("res: ", res);	
       props.setRender(!props.render);
     })
     .catch((err) => {
       console.log(err);
     });
-    console.log("decline render: ", props.render);
   };
 
   return (

@@ -2,7 +2,6 @@ import image from "../assets/avatar.jpeg";
 import "./message.css";
 
 const Message = (props) => {
-    // console.log(props);
   return (
     <div className="message">
       {props.message.type === "received" ? (

@@ -6,7 +6,6 @@ import './user.css';
 const User = (props) => {
     // send request
     const add = async () => {
-        console.log('add');
         await axios.post('http://localhost:4000/send_request', {
             user: props.user,
             friend: props.friend

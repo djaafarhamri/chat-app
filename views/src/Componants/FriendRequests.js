@@ -20,7 +20,6 @@ const FriendRequests = (props) => {
       console.log(err);
     });
     
-    console.log("get render: ", render);
     return () => {
       // cleanup
     };

@@ -61,8 +61,7 @@ module.exports.send_request = async (req, res) => {
 
 module.exports.accept_request = async (req, res) => {
   const { user, friend } = req.body;
-  console.log("username: ", user);
-  console.log("friend: ", friend);
+
   try {
     await User.findOneAndUpdate(
       { username: user.username },
@@ -97,16 +96,12 @@ module.exports.accept_request = async (req, res) => {
 
 module.exports.decline_request = async (req, res) => {
   const { user, friend } = req.body;
-  console.log("decline request: ", user, friend);
   try {
-    console.log("test 1");
     await User.findOneAndUpdate(
       { username: user.username },
       { $pull: { friendRequests: friend } },
     );
-    console.log("test 2");
     res.status(200).json({ friend });
-    console.log("test 3");
   } catch (error) {
     res.status(400).json(error);
   }
@@ -115,7 +110,6 @@ module.exports.decline_request = async (req, res) => {
 
 module.exports.delete_friend = async (req, res) => {
   const { user, friend } = req.body;
-  console.log("delet request: ", user, friend);
   try {
     await User.findOneAndUpdate(
       { username: user.username },
