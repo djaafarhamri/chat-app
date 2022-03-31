@@ -20,7 +20,7 @@ module.exports.send_message = async (req, res) => {
         messages: [{ sender, message }],
       });
     }
-    res.status(200).json("message sent");
+    res.status(200).json({ sender, message });
   } catch (error) {
     console.log(error);
     res.status(400).json(error);

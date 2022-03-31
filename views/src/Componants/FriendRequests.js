@@ -1,5 +1,5 @@
 import "./friendRequests.css";
-import { useState, useContext, useEffect, useCallback } from "react";
+import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../contexts/user";
 import axios from "axios";
 import FriendRequest from "./FriendRequest";

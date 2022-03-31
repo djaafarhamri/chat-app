@@ -1,10 +1,13 @@
 import image from "../assets/avatar.jpeg";
 import "./message.css";
+import { useContext } from "react";
+const { UserContext } = require("../contexts/user");
 
 const Message = (props) => {
+  const [user] = useContext(UserContext);
   return (
     <div className="message">
-      {props.message.type === "received" ? (
+      {props.message.sender !== user ? (
         <div className={props.reSent ? "message-received":"message-received-resent"}>
           {!props.reSent && <img src={image} alt="" />}
           <h4>{props.message.text}</h4>
