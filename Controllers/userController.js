@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Chat = require("../models/Chat");
+import { v4 as uuidv4 } from 'uuid';
 
 module.exports.sign_up = async (req, res) => {
   const { email, username, password } = req.body;
@@ -61,11 +63,11 @@ module.exports.send_request = async (req, res) => {
 
 module.exports.accept_request = async (req, res) => {
   const { user, friend } = req.body;
-
+  const roomId = uuidv4();
   try {
     await User.findOneAndUpdate(
       { username: user.username },
-      { $addToSet: { friends: friend } },
+      { $addToSet: { friends: { ...friend, room } } },
       { new: true }
     );
     await User.findOneAndUpdate(
@@ -76,6 +78,7 @@ module.exports.accept_request = async (req, res) => {
             username: user.username,
             image: user.image,
             _id: user._id,
+            room,
           },
         },
       },
@@ -86,6 +89,10 @@ module.exports.accept_request = async (req, res) => {
       { $pull: { friendRequests: friend } },
       { new: true }
     );
+    await Chat.create({
+      room,
+      users: [user._id, friend._id],
+    });
     res.status(200).json({ friend });
   } catch (error) {
     res.status(400).json(error);

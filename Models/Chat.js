@@ -7,14 +7,12 @@ const chatSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
-    user1: {
-      type: String,
-      required: true,
-    },
-    user2: {
-      type: String,
-      required: true,
-    },
+    users: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        },
+    ],
     messages: [
       {
         sender: {

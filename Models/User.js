@@ -34,6 +34,9 @@ const userSchema = mongoose.Schema(
           type: String,
           default: path.join(__dirname, "uploads", "avatar.jpeg"),
         },
+        room: {
+          type: String,
+        }
       },
     ],
     friendRequests: [
