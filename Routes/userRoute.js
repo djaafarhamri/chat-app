@@ -55,6 +55,8 @@ router.post("/delete_friend", userController.delete_friend);
 router.get("/get_friends/:username", userController.get_friends);
 router.get("/get_friendRequests/:username", userController.get_friendRequests);
 router.get("/search_users/:username", userController.search_users);
+// get friend's room
+router.post("/get_friend_room", userController.get_friend_room);
 
 //* Profile
 

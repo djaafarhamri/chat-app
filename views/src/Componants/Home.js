@@ -6,7 +6,7 @@ import { UserContext } from '../contexts/user';
 import { useContext } from 'react';
 
 const Home = () => {
-    const [user, setUser] = useContext(UserContext);
+    const [user] = useContext(UserContext);
     const friend = {
         avatar: 'C:/Users/EliteBooK/Desktop/projects/chat-app/uploads/avatar.jpeg',
         username: 'Felix',
@@ -15,7 +15,7 @@ const Home = () => {
     return ( 
         <div className="home">
             <Profile user={user} />
-            <Chat user={user} friend={friend} />
+            <Chat friend={friend} />
             <Discover user={user} />
         </div>
      );

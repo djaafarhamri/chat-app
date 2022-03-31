@@ -1,32 +1,37 @@
 import "./chat.css";
 import Message from "./Message";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import axios from "axios";
+import { UserContext } from "../contexts/user";
+import { RoomContext } from "../contexts/room";
 
-const Chat = (props) => {
+const Chat = () => {
+  const [user] = useContext(UserContext);
+  const [room] = useContext(RoomContext);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const messagesEndRef = useRef(null);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+  
   // get messages
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/get_messages/${props.room}`)
+      .get(`http://localhost:4000/get_messages/${room}`)
       .then((res) => {
         setMessages(res.data.messages);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [props.room]);
+  }, [room]);
   // send message
   const sendMessage = async () => {
     await axios
       .post("http://localhost:4000/send_message", {
-        room: props.room,
-        sender: props.user.username,
+        room,
+        sender: user.username,
         message: message, 
       })
       .then((res) => {

@@ -1,9 +1,13 @@
 import image from '../assets/avatar.jpeg';
 import './friend.css';
+import { useContext } from 'react';
+import { RoomContext } from '../contexts/room';
 
 const Friend = (props) => {
+    const [setRoom] = useContext(RoomContext);
+
     return ( 
-        <div className="friend">
+        <div onClick={() => {setRoom(props.friend.room)}} className="friend">
             <img src={image} alt="" />
             <h3>{props.friend.username}</h3>
         </div>

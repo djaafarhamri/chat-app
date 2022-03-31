@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const Chat = require("../models/Chat");
-import { v4 as uuidv4 } from 'uuid';
+const uuidv4 = require('uuid').v4;
 
 module.exports.sign_up = async (req, res) => {
   const { email, username, password } = req.body;
@@ -165,3 +165,13 @@ module.exports.change_username = async (req, res) => {
   );
   res.status(200).json({ user });
 };
+
+// get_friend_room
+module.exports.get_friend_room = async (req, res) => {
+  const { user, friend } = req.body;
+  const userD = await User.findOne({ username: user.username });
+  // get the room from the friends array
+  const room = userD.friends.find((e) => e.username === friend.username).room;
+  console.log(room);
+  res.status(200).json({ room });
+}
