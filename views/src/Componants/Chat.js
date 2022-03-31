@@ -9,18 +9,19 @@ const Chat = () => {
   const [user] = useContext(UserContext);
   const [room] = useContext(RoomContext);
   const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const messagesEndRef = useRef(null);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-  
+
   // get messages
   useEffect(() => {
     axios
       .get(`http://localhost:4000/get_messages/${room}`)
       .then((res) => {
         setMessages(res.data.messages);
+        scrollToBottom();
       })
       .catch((err) => {
         console.log(err);
@@ -32,12 +33,11 @@ const Chat = () => {
       .post("http://localhost:4000/send_message", {
         room,
         sender: user.username,
-        message: message, 
+        message: message,
       })
       .then((res) => {
-        setMessages(...messages, res.data);
-        setMessage('');
-      })  
+        setMessage("");
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -45,37 +45,46 @@ const Chat = () => {
   // scroll to bottom
   useEffect(() => {
     scrollToBottom();
-  }, []);
+  }, [room]);
 
-  
   return (
     <div className="chat">
-      <div className="messages-container">
-        <div className="messages">
-          {messages.map((message, index) => {
-              if (index + 1 < messages.length) {
-              var reSent = message.sender === messages[index + 1].sender;
-              }
-            return (
-              <div key={index}>
-                <Message reSent={reSent} message={message} />
-              </div>
-            );
-          })}
-        </div>
-        <div ref={messagesEndRef} />
-      </div>
-      <div className="input">
-        <input type="text" placeholder="Aa" value={message} onChange={(e) => setMessage(e.target.value)} />
-        <button
-          onClick={() => {
-            scrollToBottom();
-            sendMessage();
-          }}
-        >
-          Send
-        </button>
-      </div>
+      {room && (
+        <>
+          <div className="messages-container">
+          <div className="messages">
+            {messages &&
+              messages.map((msg, index) => {
+                if (index + 1 < messages.length) {
+                  var reSent = msg.sender === messages[index + 1].sender;
+                }
+                return (
+                  <div key={index}>
+                    <Message reSent={reSent} msg={msg} />
+                  </div>
+                );
+              })}
+          </div>
+            <div ref={messagesEndRef} />
+          </div>
+          <div className="input">
+            <input
+              type="text"
+              placeholder="Aa"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            <button
+              onClick={() => {
+                sendMessage();
+                scrollToBottom();
+              }}
+            >
+              Send
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

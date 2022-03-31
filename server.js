@@ -13,6 +13,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const PORT = process.env.PORT || 4000;
 const userRoute = require("./Routes/userRoute");
+const chatRoute = require("./Routes/chatRoute");
 
 const session = require("express-session");
 
@@ -91,3 +92,4 @@ app.get("/", (req, res) => {
 });
 
 app.use(userRoute);
+app.use(chatRoute);

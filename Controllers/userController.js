@@ -63,7 +63,7 @@ module.exports.send_request = async (req, res) => {
 
 module.exports.accept_request = async (req, res) => {
   const { user, friend } = req.body;
-  const roomId = uuidv4();
+  const room = uuidv4();
   try {
     await User.findOneAndUpdate(
       { username: user.username },
@@ -165,13 +165,3 @@ module.exports.change_username = async (req, res) => {
   );
   res.status(200).json({ user });
 };
-
-// get_friend_room
-module.exports.get_friend_room = async (req, res) => {
-  const { user, friend } = req.body;
-  const userD = await User.findOne({ username: user.username });
-  // get the room from the friends array
-  const room = userD.friends.find((e) => e.username === friend.username).room;
-  console.log(room);
-  res.status(200).json({ room });
-}
