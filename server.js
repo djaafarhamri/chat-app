@@ -14,11 +14,12 @@ const mongoose = require("mongoose");
 const PORT = process.env.PORT || 4000;
 const userRoute = require("./Routes/userRoute");
 const chatRoute = require("./Routes/chatRoute");
-
 const session = require("express-session");
 
+
+
 mongoose
-  .connect("mongodb://localhost:27017/chat-app", {
+.connect("mongodb://localhost:27017/chat-app", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -42,14 +43,14 @@ app.use((req, res, next) => {
   res.header(
     "Access-Control-Allow-Headers",
     "X-HTTP-Method-Override, Accept, Authorization, Content-Type, X-Requested-With, Range"
-  );
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  } else {
-    return next();
-  }
-});
-//app.use(cors())
+    );
+    if (req.method === "OPTIONS") {
+      return res.sendStatus(200);
+    } else {
+      return next();
+    }
+  });
+  //app.use(cors())
 app.use(cookieParser());
 app.use(express.static("public"));
 app.use(express.json());
@@ -62,6 +63,30 @@ app.use(express.json());
 //     maxAge: 24 * 60 * 60 * 1000, // 24 hours
 //   })
 // );
+
+//* socket connection
+const io = socket(server, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("user connected");
+  socket.on("join", (data) => {
+    console.log(data);
+    socket.join(data.room);
+  });
+  socket.on("sendMessage", (data) => {
+    console.log(data);
+    io.to(data.room).emit("receiveMessage", data);
+  });
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
+
+
 app.use(
   session({
     secret: "Any normal Word", //decode or encode session
@@ -80,12 +105,6 @@ var corsOptions = {
 app.use(cors(corsOptions));
 app.use(passport.initialize());
 app.use(passport.session());
-
-const io = socket(server, {
-  cors: {
-    origin: "http://localhost:3000",
-  },
-});
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));

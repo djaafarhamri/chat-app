@@ -82,6 +82,13 @@ const Chat = () => {
             >
               Send
             </button>
+            <button
+              onClick={() => {
+                setMessages([...messages, {message: "test", sender: "user1"}]);
+              }}
+            >
+              test
+            </button>
           </div>
         </>
       )}

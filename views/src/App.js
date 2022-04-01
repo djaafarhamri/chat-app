@@ -6,26 +6,30 @@ import Home from "./Componants/Home";
 import PrivateRoute from "./Componants/PrivateRoute";
 import { UserProvider } from "./contexts/user";
 import { RoomProvider } from "./contexts/room";
+import { SocketContext } from "./contexts/socket";
+import { socket } from "./contexts/socket";
 
 function App() {
   return (
     <div className="App">
       <UserProvider>
-        <RoomProvider>
-          <Routes>
-            <Route
-              exact
-              path="/"
-              element={
-                <PrivateRoute>
-                  <Home />
-                </PrivateRoute>
-              }
-            ></Route>
-            <Route exact path="/sign-up" element={<Register />}></Route>
-            <Route exact path="/sign-in" element={<Login />}></Route>
-          </Routes>
-        </RoomProvider>
+        <SocketContext.Provider value={socket}>
+          <RoomProvider>
+            <Routes>
+              <Route
+                exact
+                path="/"
+                element={
+                  <PrivateRoute>
+                    <Home />
+                  </PrivateRoute>
+                }
+              ></Route>
+              <Route exact path="/sign-up" element={<Register />}></Route>
+              <Route exact path="/sign-in" element={<Login />}></Route>
+            </Routes>
+          </RoomProvider>
+        </SocketContext.Provider>
       </UserProvider>
     </div>
   );
