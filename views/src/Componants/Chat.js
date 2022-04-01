@@ -35,16 +35,16 @@ const Chat = () => {
       socket.emit("join", {
         room,
       });
-    }
-    axios
-    .get(`http://localhost:4000/get_messages/${room}`)
-    .then((res) => {
-      setMessages(res.data.messages);
-      scrollToBottom();
+      axios
+      .get(`http://localhost:4000/get_messages/${room}`)
+      .then((res) => {
+        setMessages(res.data.messages);
+        scrollToBottom();
       })
       .catch((err) => {
         console.log(err);
       });
+    }
   }, [room]);
   // send message
   const sendMessage = async () => {

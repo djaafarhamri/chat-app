@@ -135,8 +135,12 @@ module.exports.delete_friend = async (req, res) => {
 
 module.exports.get_friends = async (req, res) => {
   const { username } = req.params;
-  const user = await User.findOne({ username });
-  res.status(200).json({ friends: user.friends });
+  try {
+    const user = await User.findOne({ username });
+    res.status(200).json({ friends: user.friends });
+  } catch (error) {
+    res.status(404).json('user not found');
+  }
 };
 
 module.exports.get_friendRequests = async (req, res) => {
