@@ -4,6 +4,10 @@ const userController = require("../Controllers/userController");
 const router = Router();
 const passport = require("passport");
 const bcrypt = require("bcrypt");
+
+const upload = require("../Midllewares/upload");
+const validation = require("../Midllewares/validation");
+
 var LocalStrategy = require("passport-local");
 
 passport.serializeUser((user, cb) => {
@@ -59,5 +63,6 @@ router.get("/search_users/:username", userController.search_users);
 //* Profile
 
 router.post("/change_username", userController.change_username);
+router.post("/change_picture", upload, validation, userController.change_picture);
 
 module.exports = router;
