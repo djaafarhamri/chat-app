@@ -74,12 +74,12 @@ const io = socket(server, {
 io.on("connection", (socket) => {
   console.log("user connected");
   socket.on("join", (data) => {
-    console.log(data);
+    console.log(data.room);
     socket.join(data.room);
   });
   socket.on("sendMessage", (data) => {
     console.log(data);
-    io.to(data.room).emit("receiveMessage", data);
+    io.in(data.room).emit("receiveMessage", {sender: data.sender, message: data.message});
   });
   socket.on("disconnect", () => {
     console.log("user disconnected");

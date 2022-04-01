@@ -4,6 +4,9 @@ import { useEffect, useRef, useState, useContext } from "react";
 import axios from "axios";
 import { UserContext } from "../contexts/user";
 import { RoomContext } from "../contexts/room";
+import socketio from "socket.io-client";
+const ENDPOINT = "http://localhost:4000/";
+const socket = socketio(ENDPOINT);
 
 const Chat = () => {
   const [user] = useContext(UserContext);
@@ -14,14 +17,30 @@ const Chat = () => {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
+  // receive message from server
+  useEffect(() => {
+    console.log("useEffect");
+    socket.on("receiveMessage", (data) => {
+      setMessages([
+        ...messages,
+        { message: data.message, sender: data.sender },
+      ]);
+      scrollToBottom();
+    });
+  });
+  
   // get messages
   useEffect(() => {
+    if (room) {
+      socket.emit("join", {
+        room,
+      });
+    }
     axios
-      .get(`http://localhost:4000/get_messages/${room}`)
-      .then((res) => {
-        setMessages(res.data.messages);
-        scrollToBottom();
+    .get(`http://localhost:4000/get_messages/${room}`)
+    .then((res) => {
+      setMessages(res.data.messages);
+      scrollToBottom();
       })
       .catch((err) => {
         console.log(err);
@@ -29,11 +48,19 @@ const Chat = () => {
   }, [room]);
   // send message
   const sendMessage = async () => {
+    scrollToBottom();
+    if (message) {
+      socket.emit("sendMessage", {
+        room,
+        sender: user.username,
+        message,
+      });
+    }
     await axios
       .post("http://localhost:4000/send_message", {
         room,
         sender: user.username,
-        message: message,
+        message,
       })
       .then((res) => {
         setMessage("");
@@ -52,19 +79,19 @@ const Chat = () => {
       {room && (
         <>
           <div className="messages-container">
-          <div className="messages">
-            {messages &&
-              messages.map((msg, index) => {
-                if (index + 1 < messages.length) {
-                  var reSent = msg.sender === messages[index + 1].sender;
-                }
-                return (
-                  <div key={index}>
-                    <Message reSent={reSent} msg={msg} />
-                  </div>
-                );
-              })}
-          </div>
+            <div className="messages">
+              {messages &&
+                messages.map((msg, index) => {
+                  if (index + 1 < messages.length) {
+                    var reSent = msg.sender === messages[index + 1].sender;
+                  }
+                  return (
+                    <div key={index}>
+                      <Message reSent={reSent} msg={msg} />
+                    </div>
+                  );
+                })}
+            </div>
             <div ref={messagesEndRef} />
           </div>
           <div className="input">
@@ -81,13 +108,6 @@ const Chat = () => {
               }}
             >
               Send
-            </button>
-            <button
-              onClick={() => {
-                setMessages([...messages, {message: "test", sender: "user1"}]);
-              }}
-            >
-              test
             </button>
           </div>
         </>
