@@ -4,19 +4,23 @@ import { useEffect, useRef, useState, useContext } from "react";
 import axios from "axios";
 import { UserContext } from "../contexts/user";
 import { RoomContext } from "../contexts/room";
-import socketio from "socket.io-client";
-const ENDPOINT = "http://localhost:4000/";
-const socket = socketio(ENDPOINT);
+import { SocketContext } from "../contexts/socket";
 
 const Chat = () => {
   const [user] = useContext(UserContext);
   const [room] = useContext(RoomContext);
+  const socket = useContext(SocketContext);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const messagesEndRef = useRef(null);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+  // online user 
+  useEffect(() => {
+    socket.emit("online_user", { username: user.username });
+  }, [socket, user.username]);
+
   // receive message from server
   useEffect(() => {
     console.log("useEffect");
