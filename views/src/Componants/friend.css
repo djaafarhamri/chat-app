@@ -8,8 +8,14 @@
     background: rgba(0, 0, 0, 0.1);
 }
 
-.friend img {
+.friend-image {
+    position: relative;
     margin: 10px 5px;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+.friend img {
     border-radius: 50%;
     height: 40px;
     width: 40px;
@@ -17,4 +23,22 @@
 
 .friend h3 {
     font-weight: 500;
+}
+.online-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background: #4CAF50;
+}
+.offline-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background: #a5a5a5;
 }

@@ -35,7 +35,10 @@ const Friend = (props) => {
       }}
       className="friend"
     >
-      <img src={image} alt="" />
+      <div className="friend-image">
+        <img src={image} alt="" />
+        <div className={isOnline ? "online-status" : "offline-status"}></div>
+      </div>
       <h3>{props.friend.username}</h3>
     </div>
   );
