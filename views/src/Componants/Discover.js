@@ -8,10 +8,13 @@ import ChangeName from "./ChangeName";
 import FindFriends from "./FindFriends";
 import FriendRequests from "./FriendRequests";
 import FriendsList from "./FriendsList";
+import Picture from "./Picture";
 
 const Discover = (props) => {
   //setShowChangeName
   const [showChangeName, setShowChangeName] = useState(false);
+  //setShowPicture
+  const [showPicture, setShowPicture] = useState(false);
   //showfind
   const [showFind, setShowFind] = useState(false);
   //show requests
@@ -33,6 +36,7 @@ const Discover = (props) => {
   return (
     <div className="discover">
       {showChangeName && <ChangeName setShowChangeName={setShowChangeName} />}
+      {showPicture && <Picture setShowPicture={setShowPicture} />}
       {showFind && <FindFriends setShowFind={setShowFind} />}
       {showRequests && <FriendRequests setShowRequests={setShowRequests} />}
       {showList && <FriendsList setShowList={setShowList} />}
@@ -56,7 +60,12 @@ const Discover = (props) => {
         >
           Change username
         </button>
-        <button>Change profile picture</button>
+        <button
+          onClick={() => {
+            setShowPicture(true);
+          }}
+          
+        >Change profile picture</button>
         <button onClick={() => {setShowList(true)}}>
           Frriends List
           </button>

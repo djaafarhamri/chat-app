@@ -172,13 +172,13 @@ module.exports.change_username = async (req, res) => {
 
 //change picture
 module.exports.change_picture = async (req, res) => {
-  // const { username } = req.params;
-  // const { image } = req.body;
-  // const user = await User.findOneAndUpdate(
-  //   { username },
-  //   { image },
-  //   { new: true }
-  // );
+  const { username } = req.body;
+  const image = req.file.path;
+  const user = await User.findOneAndUpdate(
+    { username },
+    { image },
+    { new: true }
+  );
   console.log("file : ", req.file);
-  res.status(200).json(true);
+  res.status(200).json(user);
 };
