@@ -180,5 +180,5 @@ module.exports.change_picture = async (req, res) => {
     { new: true }
   );
   console.log("file : ", req.file);
-  res.status(200).json(user);
+  res.status(200).json({image: user.image});
 };
