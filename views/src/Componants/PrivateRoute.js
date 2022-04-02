@@ -20,7 +20,7 @@ const PrivateRoute = ({ children }) => {
       .catch((err) => {
         navigate("/sign-in");
       });
-  }, [isAuthenticated, isLoading, navigate]);
+  }, [isAuthenticated, isLoading, navigate, setUser]);
 
   return isLoading ? <p>loading...</p> : children;
 };
