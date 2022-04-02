@@ -8,10 +8,15 @@ const chatSchema = mongoose.Schema(
       unique: true,
     },
     users: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+      {
+        username: {
+          type: String,
         },
+        last_online: {
+          type: Date,
+          default: Date.now()
+        },
+      },
     ],
     messages: [
       {
@@ -25,7 +30,7 @@ const chatSchema = mongoose.Schema(
         },
         time: {
           type: Date,
-          default: Date.now,
+          default: Date.now(),
         },
       },
     ],

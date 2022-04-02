@@ -49,7 +49,7 @@ const Chat = () => {
         console.log(err);
       });
     }
-  }, [room]);
+  }, [room, socket]);
   // send message
   const sendMessage = async () => {
     scrollToBottom();

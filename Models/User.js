@@ -15,6 +15,17 @@ const userSchema = mongoose.Schema(
       unique: true,
       validate: [isEmail, "please enter a valid email"],
     },
+    first_name: {
+      type: String,
+      required: [true, "please enter your first name"],
+    },
+    middle_name: {
+      type: String,
+    },
+    last_name: {
+      type: String,
+      required: [true, "please enter your last name"],
+    },
     username: {
       type: String,
       required: [true, "please enter an username"],
@@ -30,10 +41,6 @@ const userSchema = mongoose.Schema(
         username: {
           type: String,
         },
-        image: {
-          type: String,
-          default: path.join(__dirname, "uploads", "avatar.jpeg"),
-        },
         room: {
           type: String,
         }
@@ -44,10 +51,6 @@ const userSchema = mongoose.Schema(
         username: {
           type: String,
           unique: true,
-        },
-        image: {
-          type: String,
-          default: path.join(__dirname, "uploads", "avatar.jpeg"),
         },
       },
     ],

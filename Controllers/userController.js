@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const Chat = require("../models/Chat");
-const uuidv4 = require('uuid').v4;
+const uuidv4 = require("uuid").v4;
 
 module.exports.sign_up = async (req, res) => {
   const { email, username, password } = req.body;
@@ -48,7 +48,7 @@ module.exports.send_request = async (req, res) => {
         { username: friend.username },
         {
           $addToSet: {
-            friendRequests: { username: user.username, image: user.image },
+            friendRequests: { username: user.username },
           },
         },
         { new: true }
@@ -64,19 +64,20 @@ module.exports.send_request = async (req, res) => {
 module.exports.accept_request = async (req, res) => {
   const { user, friend } = req.body;
   const room = uuidv4();
+  console.log("friend: ", friend);
   try {
     await User.findOneAndUpdate(
       { username: user.username },
       { $addToSet: { friends: { ...friend, room } } },
       { new: true }
     );
+    console.log("friend: 1");
     await User.findOneAndUpdate(
       { username: friend.username },
       {
         $addToSet: {
           friends: {
             username: user.username,
-            image: user.image,
             _id: user._id,
             room,
           },
@@ -84,15 +85,18 @@ module.exports.accept_request = async (req, res) => {
       },
       { new: true }
     );
+    console.log("friend: 2");
     await User.findOneAndUpdate(
       { username: user.username },
       { $pull: { friendRequests: friend } },
       { new: true }
     );
+    console.log("friend: 3");
     await Chat.create({
       room,
-      users: [user._id, friend._id],
+      users: [{username: user.username}, {username:friend.username}],
     });
+    console.log("friend: 4");
     res.status(200).json({ friend });
   } catch (error) {
     res.status(400).json(error);
@@ -106,7 +110,7 @@ module.exports.decline_request = async (req, res) => {
   try {
     await User.findOneAndUpdate(
       { username: user.username },
-      { $pull: { friendRequests: friend } },
+      { $pull: { friendRequests: friend } }
     );
     res.status(200).json({ friend });
   } catch (error) {
@@ -120,12 +124,21 @@ module.exports.delete_friend = async (req, res) => {
   try {
     await User.findOneAndUpdate(
       { username: user.username },
-      { $pull: { friends: friend } },
+      { $pull: { friends: friend } }
     );
     await User.findOneAndUpdate(
       { username: friend.username },
-      { $pull: { friends: { username: user.username, image: user.image, _id: user._id } } },
+      {
+        $pull: {
+          friends: {
+            username: user.username,
+            room: friend.room,
+            _id: user._id,
+          },
+        },
+      }
     );
+    await Chat.findOneAndDelete({room: friend.room})
     res.status(200).json({ friend });
   } catch (error) {
     res.status(400).json(error);
@@ -139,7 +152,7 @@ module.exports.get_friends = async (req, res) => {
     const user = await User.findOne({ username });
     res.status(200).json({ friends: user.friends });
   } catch (error) {
-    res.status(404).json('user not found');
+    res.status(404).json("user not found");
   }
 };
 module.exports.get_friend_image = async (req, res) => {
@@ -148,7 +161,7 @@ module.exports.get_friend_image = async (req, res) => {
     const user = await User.findOne({ username });
     res.status(200).json({ image: user.image });
   } catch (error) {
-    res.status(404).json('user not found');
+    res.status(404).json("user not found");
   }
 };
 
@@ -189,5 +202,5 @@ module.exports.change_picture = async (req, res) => {
     { new: true }
   );
   console.log("file : ", req.file);
-  res.status(200).json({image: user.image});
+  res.status(200).json({ image: user.image });
 };
