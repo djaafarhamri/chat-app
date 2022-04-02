@@ -7,6 +7,7 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const sign_up = () => {
@@ -16,7 +17,7 @@ const Register = () => {
         navigate("/sign-in");
       })
       .catch((err) => {
-        console.log(err.message);
+        setError(err.message);
       });
   };
   return (

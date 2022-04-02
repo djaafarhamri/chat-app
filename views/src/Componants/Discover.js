@@ -1,6 +1,8 @@
 import "./discover.css";
 import { useState } from "react";
 import axios from "axios";
+import User from "./User";
+import image from "../assets/avatar.jpeg";
 import { useNavigate } from "react-router-dom";
 import ChangeName from "./ChangeName";
 import FindFriends from "./FindFriends";
