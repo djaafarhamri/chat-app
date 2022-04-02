@@ -5,7 +5,7 @@ import { SocketContext } from "../contexts/socket";
 import axios from "axios";
 
 const Friend = (props) => {
-  const [room, setRoom] = useContext(RoomContext);
+  const [setRoom] = useContext(RoomContext);
   const socket = useContext(SocketContext);
   const [isOnline, setIsOnline] = useState(false);
   const [image, setImage] = useState(null); 

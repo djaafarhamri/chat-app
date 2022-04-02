@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { UserContext } from "../contexts/user";
 
 const PrivateRoute = ({ children }) => {
-  const [user, setUser] = useContext(UserContext);
+  const [setUser] = useContext(UserContext);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const PrivateRoute = ({ children }) => {
       .catch((err) => {
         navigate("/sign-in");
       });
-  }, [isAuthenticated, isLoading, navigate]);
+  }, [isAuthenticated, isLoading, navigate, setUser]);
 
   return isLoading ? <p>loading...</p> : children;
 };

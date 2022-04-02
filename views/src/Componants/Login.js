@@ -7,9 +7,8 @@ import { UserContext } from "../contexts/user";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
-  const [user, setUser] = useContext(UserContext);
+  const [setUser] = useContext(UserContext);
 
   const sign_in = () => {
     axios
@@ -19,12 +18,12 @@ const Login = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        if (res.data === "error") return setError("error");
+        if (res.data === "error") return console.log("error");
         setUser(res.data.user);
         return navigate("/");
       })
       .catch((err) => {
-        setError(err.message);
+        console.log(err.message);
       });
   };
   return (
