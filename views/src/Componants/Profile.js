@@ -21,7 +21,7 @@ const Profile = (props) => {
       }
   }, [user.username]);
 
-
+ 
   return (
     <div className="profile">
       

@@ -142,6 +142,15 @@ module.exports.get_friends = async (req, res) => {
     res.status(404).json('user not found');
   }
 };
+module.exports.get_friend_image = async (req, res) => {
+  const { username } = req.params;
+  try {
+    const user = await User.findOne({ username });
+    res.status(200).json({ image: user.image });
+  } catch (error) {
+    res.status(404).json('user not found');
+  }
+};
 
 module.exports.get_friendRequests = async (req, res) => {
   const { username } = req.params;

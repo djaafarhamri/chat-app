@@ -57,6 +57,7 @@ router.post("/accept_request", userController.accept_request);
 router.post("/decline_request", userController.decline_request);
 router.post("/delete_friend", userController.delete_friend);
 router.get("/get_friends/:username", userController.get_friends);
+router.get("/get_friend_image/:username", userController.get_friend_image);
 router.get("/get_friendRequests/:username", userController.get_friendRequests);
 router.get("/search_users/:username", userController.search_users);
 

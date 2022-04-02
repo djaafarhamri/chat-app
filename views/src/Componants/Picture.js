@@ -17,10 +17,10 @@ const Picture = (props) => {
         withCredentials: true,
       })
       .then((res) => {
-        console.log(`http://localhost:4000/${res.data.image}`);
         var img = res.data.image;
         img.split('\\').join('/');
         setImage(`http://localhost:4000/${img}`);
+        props.setShowPicture(false);
       })
       .catch((err) => {
         console.log(err);

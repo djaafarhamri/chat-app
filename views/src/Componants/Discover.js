@@ -42,7 +42,7 @@ const Discover = (props) => {
       {showList && <FriendsList setShowList={setShowList} />}
       <div className="profile-info">
         {/* <img src={props.user.avatar} alt="" /> */}
-        <img src={image} alt="" />
+        <img src={`http://localhost:4000/${props.user.image}`} alt="" />
         <h3>{props.user.username}</h3>
       </div>
       {/* <input
