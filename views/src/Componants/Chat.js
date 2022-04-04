@@ -11,45 +11,92 @@ const Chat = () => {
   const [room] = useContext(RoomContext);
   const socket = useContext(SocketContext);
   const [messages, setMessages] = useState([]);
+  const [friend, setFriend] = useState("");
+  const [timeSeen, setTimeSeen] = useState(null);
   const [message, setMessage] = useState("");
   const messagesEndRef = useRef(null);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-  // online user 
+  // online user
   useEffect(() => {
     socket.emit("online_user", { username: user.username });
   }, [socket, user.username]);
 
   // receive message from server
   useEffect(() => {
-    console.log("useEffect");
+    console.log("receiveMessage");
     socket.on("receiveMessage", (data) => {
-      setMessages([
-        ...messages,
-        { message: data.message, sender: data.sender },
+      setMessages((old) => [
+        ...old,
+        { message: data.message, sender: data.sender, time: data.time },
       ]);
+      socket.emit("seen_user", {
+        sender: data.sender,
+        receiver: user.username,
+        room,
+        time: Date.now()
+      });
       scrollToBottom();
     });
-  });
-  
+    return () => {
+      socket.off("receiveMessage");
+    }
+  }, [room, socket, user.username]);
+// seen
+  useEffect(() => {
+    socket.on("seen_server", (data) => {
+      if (data.receiver !== user.username) {
+        console.log("seen", data);
+        setTimeSeen(data.time);
+      }
+    });
+    return () => {
+      socket.off("seen_server");
+    }
+  }, [socket, user.username]);
   // get messages
   useEffect(() => {
     if (room) {
       socket.emit("join", {
         room,
       });
+      socket.emit("seen_user", {
+        receiver: user.username,
+        room,
+        time: Date.now()
+      });
       axios
-      .get(`http://localhost:4000/get_messages/${room}`)
-      .then((res) => {
-        setMessages(res.data.messages);
-        scrollToBottom();
-      })
-      .catch((err) => {
-        console.log(err);
+        .get(`http://localhost:4000/get_messages/${room}`)
+        .then((res) => {
+          setMessages(res.data.messages);
+          setFriend(() => {
+            return res.data.users.filter(
+              (us) => us.username !== user.username
+            )[0];
+          });
+          scrollToBottom();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      axios
+        .post(`http://localhost:4000/update_last_online`, {
+          room,
+          username: user.username,
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err));
+    }
+    return () => {
+      socket.emit("leave", {
+        room
       });
     }
-  }, [room, socket]);
+  }, [room, socket, user.username]);
   // send message
   const sendMessage = async () => {
     scrollToBottom();
@@ -58,6 +105,7 @@ const Chat = () => {
         room,
         sender: user.username,
         message,
+        time: Date.now(),
       });
     }
     await axios
@@ -89,9 +137,21 @@ const Chat = () => {
                   if (index + 1 < messages.length) {
                     var reSent = msg.sender === messages[index + 1].sender;
                   }
+                  if (
+                    msg.sender === user.username &&
+                    (msg.time < friend.last_online ||
+                      msg.time < timeSeen)
+                  ) {
+                    return (
+                      <div key={index}>
+                        <Message msg={msg} reSent={reSent} seen={true} />
+                      </div>
+                    );
+                  }
+
                   return (
                     <div key={index}>
-                      <Message reSent={reSent} msg={msg} />
+                      <Message reSent={reSent} msg={msg} seen={false} />
                     </div>
                   );
                 })}

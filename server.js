@@ -74,13 +74,10 @@ var online_users = [];
 io.on("connection", (socket) => {
   socket.on("online_user", (data) => {
     online_users.push({ username: data.username, socket_id: socket.id });
-    console.log("online before", online_users);
     socket.broadcast.emit("new_online_user");
   });
   socket.on("get_online_friend", (data) => {
-    console.log("data: ", data);
     const username = online_users.find((user) => user.username === data.username);
-    console.log('username: ',username)
     if (username) {
       io.emit("online_friend", username);
     }
@@ -88,15 +85,28 @@ io.on("connection", (socket) => {
 
   console.log("user connected");
   socket.on("join", (data) => {
-    console.log(data.room);
     socket.join(data.room);
+    console.log('joined room', data.room)
   });
   socket.on("sendMessage", (data) => {
-    console.log(data);
+    console.log("message received: ", data.room);
     io.in(data.room).emit("receiveMessage", {
       sender: data.sender,
       message: data.message,
+      time: data.time,
     });
+  });
+  //seen
+  socket.on("seen_user", (data) => {
+    console.log('seeeeeeeeeeeeen, ', data)
+    io.in(data.room).emit("seen_server", {
+      receiver: data.receiver,
+      time: data.time,
+    });
+  });
+  // leave room
+  socket.on("leave", (data) => {
+    socket.leave(data.room);
   });
   socket.on("disconnect", () => {
     online_users = online_users.filter((e) => e.socket_id !== socket.id);
@@ -106,7 +116,6 @@ io.on("connection", (socket) => {
     if (username) {
       io.emit("offline_friend", {username: username.username});
     }
-    console.log("online after", online_users);
     console.log("user disconnected");
   });
 });

@@ -32,7 +32,22 @@ module.exports.get_messages = async (req, res) => {
   const { room } = req.params;
   try {
     const chat = await Chat.findOne({ room });
-    res.status(200).json({messages: chat.messages});
+    res.status(200).json({ messages: chat.messages, users: chat.users });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json(error);
+  }
+};
+
+module.exports.update_last_online = async (req, res) => {
+  const { room, username } = req.body;
+  try {
+    const chat = await Chat.findOne({ room });
+
+    const user = chat.users.find((user) => user.username === username);
+    user.last_online = Date.now();
+    await Chat.findOneAndUpdate({ room }, { users: chat.users });
+    res.status(200).json({ user });
   } catch (error) {
     console.log(error);
     res.status(400).json(error);
