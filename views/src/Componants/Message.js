@@ -26,7 +26,8 @@ const Message = (props) => {
           </div>
         )}
       </div>
-      {(props.seen) && <p className="seen">seen</p>}
+      {/* {(props.seen) && <p className="seen">seen</p>} */}
+      {(props.lastSeen) && <p className="seen">last</p>}
     </>
   );
 };

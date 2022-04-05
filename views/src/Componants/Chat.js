@@ -137,6 +137,13 @@ const Chat = () => {
                   if (index + 1 < messages.length) {
                     var reSent = msg.sender === messages[index + 1].sender;
                   }
+                  if (messages[index + 1]) {
+                    var lastSeen = !(messages[index + 1].time < friend.last_online || messages[index + 1].time < timeSeen)
+                    console.log(`lastSeen ${index} : ${lastSeen}`);
+                  }
+                  else if (!messages[index + 1]) {
+                    lastSeen = true;
+                  }
                   if (
                     msg.sender === user.username &&
                     (msg.time < friend.last_online ||
@@ -144,14 +151,14 @@ const Chat = () => {
                   ) {
                     return (
                       <div key={index}>
-                        <Message msg={msg} reSent={reSent} seen={true} />
+                        <Message msg={msg} reSent={reSent} seen={true} lastSeen={lastSeen} />
                       </div>
                     );
                   }
 
                   return (
                     <div key={index}>
-                      <Message reSent={reSent} msg={msg} seen={false} />
+                      <Message reSent={reSent} msg={msg} seen={false} lastSeen={false} />
                     </div>
                   );
                 })}
