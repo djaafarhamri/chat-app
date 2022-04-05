@@ -1,19 +1,21 @@
-.home {
+.home-content {
     display: grid;
     grid-template-columns: 2fr 3fr 2fr;
-    height: 100%;
+    height: 90%;
     overflow: hidden;
 }
-
+.home {
+    height: 100%;
+}
 /* media queris 1024 px */
 @media screen and (max-width: 1024px) {
-    .home {
+    .home-content {
         grid-template-columns: 5fr 6fr;
     }
 }
 /* media queris 768 px */
 @media screen and (max-width: 768px) {
-    .home {
+    .home-content {
         grid-template-columns: 1fr;
     }
 }
