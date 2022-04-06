@@ -49,13 +49,15 @@ const Friend = (props) => {
       onClick={() => {
         setRoom(props.friend.room);
       }}
-      className="friend"
+      className={`friend ${props.active === props.friend.username && "active"}`}
     >
       <div className="friend-image">
         <img src={`http://localhost:4000/${image}`} alt="" />
-        <div className={isOnline ? "online-status" : "offline-status"}></div>
       </div>
-      <h3>{props.friend.username}</h3>
+      <div className="friend-info">
+        <h3>{props.friend.username}</h3>
+        { isOnline ? <h4 className="online-status">Online</h4> : <h4 className="offline-status">Offline</h4> }
+      </div>
     </div>
   );
 };

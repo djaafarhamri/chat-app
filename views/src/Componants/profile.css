@@ -1,9 +1,9 @@
 .profile {
-    text-align: center;
     height: 90vh;
     width: auto;
     border-right: 1px solid;
     grid-column: 1/2;
+    background: #ebf4fb;
 }
 
 
@@ -12,11 +12,7 @@
     align-items: flex-start;
     flex-direction: column;
     margin-top: 20px;
-    margin-left: 10px;
-}
-
-.chats h1 {
-    font-weight: 500;
+    /* margin-left: 10px; */
 }
 
 .chats input {

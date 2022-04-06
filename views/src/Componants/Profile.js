@@ -7,6 +7,8 @@ import { UserContext } from '../contexts/user';
 const Profile = (props) => {
   const [user] = useContext(UserContext);
   const [friends, setFriends] = useState([]); 
+  const [active, setActive] = useState(''); 
+
   useEffect(() => {
     axios
       .get(`http://localhost:4000/get_friends/${user.username}`)
@@ -26,12 +28,11 @@ const Profile = (props) => {
     <div className="profile">
       
       <div className="chats">
-        <h1>Chats</h1>
-        <input type="text" placeholder="Search Friends" />
+        {/* <input type="text" placeholder="Search Friends" /> */}
         {friends &&
           friends.map((friend, id) => (
-            <div style={{width: '100%'}} key={id}>
-              <Friend friend={friend} />
+            <div onClick={() => {setActive(friend.username)}} style={{width: '100%'}} key={id}>
+              <Friend active={active} friend={friend} />
             </div>
           ))}
       </div>

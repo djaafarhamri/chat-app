@@ -2,43 +2,43 @@
     cursor: pointer;
     display: flex;
     align-items: center;
+    border-left: 6px solid rgba(255, 255, 255, 1);
 }
 
 .friend:hover {
-    background: rgba(0, 0, 0, 0.1);
+}
+.active {
+    border-left: 6px solid #fe5051;
+    background: linear-gradient(to right, #fff, #ebf4fb);
 }
 
 .friend-image {
     position: relative;
     margin: 10px 5px;
     border-radius: 50%;
-    height: 40px;
-    width: 40px;
+    /* padding: 10px; */
 }
 .friend img {
+    height: 50px;
     border-radius: 50%;
-    height: 40px;
-    width: 40px;
+    width: 50px;
+    margin-left: 20px;
 }
-
-.friend h3 {
-    font-weight: 500;
+.friend-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 30px;
+}
+.friend-info h3 {
+    font-weight: 800;
+}
+.friend-info h4 {
+    font-weight: 400;
 }
 .online-status {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    background: #4CAF50;
+    color: #4CAF50;
 }
 .offline-status {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    background: #a5a5a5;
+    color: #a5a5a5;
 }
