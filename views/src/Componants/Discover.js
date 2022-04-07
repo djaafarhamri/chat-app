@@ -1,13 +1,22 @@
 import "./discover.css";
-
+import { useContext } from "react";
+import { UserContext } from "../contexts/user";
 
 const Discover = (props) => {
+  const [user] = useContext(UserContext);
 
   return (
     <>
-      
       <div className="discover">
-        <div className="options">
+        <div className="profileInfo">
+          <img src={`http://localhost:4000/${user.image}`} alt="" />
+          <div>
+            <h4>Djaafar Hamri</h4>
+            <h5>Personal Account</h5>
+          </div>
+        </div>
+        <hr />
+        <div className="disOptions">
           <button
             onClick={() => {
               props.setShowChangeName(true);
@@ -36,7 +45,13 @@ const Discover = (props) => {
           >
             Find Friends
           </button>
-          <button onClick={() => {props.logout()}}>Logout</button>
+          <button
+            onClick={() => {
+              props.logout();
+            }}
+          >
+            Logout
+          </button>
         </div>
       </div>
     </>
