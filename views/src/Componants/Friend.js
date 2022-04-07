@@ -49,7 +49,7 @@ const Friend = (props) => {
       onClick={() => {
         setRoom(props.friend.room);
       }}
-      className={`friend ${props.active === props.friend.username && "active"}`}
+      className={`friend ${props.active === props.friend.username ? "active" : "inactive"}`}
     >
       <div className="friend-image">
         <img src={`http://localhost:4000/${image}`} alt="" />

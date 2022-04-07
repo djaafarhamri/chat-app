@@ -5,7 +5,9 @@
     border-left: 6px solid rgba(255, 255, 255, 1);
 }
 
-.friend:hover {
+.inactive:hover {
+    border-left: 6px solid #fe505085;
+    background: linear-gradient(to right, rgb(255, 255, 255), rgba(235, 244, 251, 0.5));
 }
 .active {
     border-left: 6px solid #fe5051;

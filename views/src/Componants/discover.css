@@ -15,6 +15,7 @@
     padding: 15px;
     display: flex;
     align-items: center;
+    cursor: default;
 }
 .profileInfo h5 {
     font-weight: 500;
@@ -25,17 +26,17 @@
     width: 70px;
     border-radius: 50%;
 }
-.discover .disOptions {
+.disOptions {
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
 }
-.discover .disOptions button:hover {
+.disOptions button:hover {
     background: #fe5051;
     color: #ebf4fb;
 }
-.discover .disOptions button {
+.disOptions button {
     font-weight: 500;
     padding: 15px;
     text-align: start;
