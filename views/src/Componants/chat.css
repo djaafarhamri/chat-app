@@ -3,6 +3,7 @@
   border-right: 1px solid;
   grid-column: 2/3;
   display: flex;
+  background: #fafafa;
   flex-direction: column;
 }
 
