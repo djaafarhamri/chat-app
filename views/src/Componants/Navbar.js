@@ -57,7 +57,7 @@ const Navbar = (props) => {
         </div>
         <div className="navbar-user">
           <div className="navbar-notification">
-            <img src={notification} alt="not"></img>
+            <img src={notification} alt="not" onClick={() => {setShowRequests(true)}}></img>
           </div>
           <div
             onClick={() => {
@@ -70,7 +70,6 @@ const Navbar = (props) => {
                 setShowChangeName={setShowChangeName}
                 setShowPicture={setShowPicture}
                 setShowFind={setShowFind}
-                setShowRequests={setShowRequests}
                 setShowList={setShowList}
                 logout={logout}
               />

@@ -36,13 +36,6 @@ const Discover = (props) => {
           >
             Find Friends
           </button>
-          <button
-            onClick={() => {
-              props.setShowRequests(true);
-            }}
-          >
-            Friend Requests
-          </button>
           <button onClick={() => {props.logout()}}>Logout</button>
         </div>
       </div>

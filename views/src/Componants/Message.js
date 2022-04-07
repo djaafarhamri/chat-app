@@ -10,19 +10,17 @@ const Message = (props) => {
       <div className="message">
         {props.msg.sender !== user.username ? (
           <div
-            className={
-              props.reSent ? "message-received" : "message-received-resent"
-            }
-          >
-            {!props.reSent && <img src={image} alt="" />}
+            className=
+              "message-received">
+            {!props.reSent ? <img src={`http://localhost:4000/${props.friendImage}`} alt="" /> : <div style={{height: '40px', width: '40px', margin: '0 5px'}}></div>}
             <h4>{props.msg.message}</h4>
           </div>
         ) : (
           <div
-            className={props.reSent ? "message-sent" : "message-sent-resent"}
+            className="message-sent"
           >
             <h4>{props.msg.message}</h4>
-            {!props.reSent && <img src={image} alt="" />}
+            {!props.reSent ? <img src={`http://localhost:4000/${user.image}`} alt="" /> : <div style={{height: '40px', width: '40px', margin: '0 5px'}}></div>}
           </div>
         )}
       </div>

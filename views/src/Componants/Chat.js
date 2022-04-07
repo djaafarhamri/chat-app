@@ -2,6 +2,7 @@ import "./chat.css";
 import Message from "./Message";
 import { useEffect, useRef, useState, useContext } from "react";
 import axios from "axios";
+import send from "../assets/send.png";
 import { UserContext } from "../contexts/user";
 import { RoomContext } from "../contexts/room";
 import { SocketContext } from "../contexts/socket";
@@ -12,6 +13,7 @@ const Chat = () => {
   const socket = useContext(SocketContext);
   const [messages, setMessages] = useState([]);
   const [friend, setFriend] = useState("");
+  const [friendImage, setFriendImage] = useState("");
   const [timeSeen, setTimeSeen] = useState(null);
   const [message, setMessage] = useState("");
   const messagesEndRef = useRef(null);
@@ -35,15 +37,30 @@ const Chat = () => {
         sender: data.sender,
         receiver: user.username,
         room,
-        time: Date.now()
+        time: Date.now(),
       });
       scrollToBottom();
     });
     return () => {
       socket.off("receiveMessage");
-    }
+    };
   }, [room, socket, user.username]);
-// seen
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:4000/get_friend_image/${friend.username}`)
+      .then((res) => {
+        setFriendImage(res.data.image);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    return () => {
+      //
+    };
+  }, [friend.username]);
+
+  // seen
   useEffect(() => {
     socket.on("seen_server", (data) => {
       if (data.receiver !== user.username) {
@@ -53,7 +70,7 @@ const Chat = () => {
     });
     return () => {
       socket.off("seen_server");
-    }
+    };
   }, [socket, user.username]);
   // get messages
   useEffect(() => {
@@ -64,7 +81,7 @@ const Chat = () => {
       socket.emit("seen_user", {
         receiver: user.username,
         room,
-        time: Date.now()
+        time: Date.now(),
       });
       axios
         .get(`http://localhost:4000/get_messages/${room}`)
@@ -93,9 +110,9 @@ const Chat = () => {
     }
     return () => {
       socket.emit("leave", {
-        room
+        room,
       });
-    }
+    };
   }, [room, socket, user.username]);
   // send message
   const sendMessage = async () => {
@@ -134,31 +151,44 @@ const Chat = () => {
             <div className="messages">
               {messages &&
                 messages.map((msg, index) => {
-                  if (index + 1 < messages.length) {
-                    var reSent = msg.sender === messages[index + 1].sender;
+                  if (index !== 0) {
+                    var reSent = msg.sender === messages[index - 1].sender;
                   }
                   if (messages[index + 1]) {
-                    var lastSeen = !(messages[index + 1].time < friend.last_online || messages[index + 1].time < timeSeen)
+                    var lastSeen = !(
+                      messages[index + 1].time < friend.last_online ||
+                      messages[index + 1].time < timeSeen
+                    );
                     console.log(`lastSeen ${index} : ${lastSeen}`);
-                  }
-                  else if (!messages[index + 1]) {
+                  } else if (!messages[index + 1]) {
                     lastSeen = true;
                   }
                   if (
                     msg.sender === user.username &&
-                    (msg.time < friend.last_online ||
-                      msg.time < timeSeen)
+                    (msg.time < friend.last_online || msg.time < timeSeen)
                   ) {
                     return (
                       <div key={index}>
-                        <Message msg={msg} reSent={reSent} seen={true} lastSeen={lastSeen} />
+                        <Message
+                          friendImage={friendImage}
+                          msg={msg}
+                          reSent={reSent}
+                          seen={true}
+                          lastSeen={lastSeen}
+                        />
                       </div>
                     );
                   }
 
                   return (
                     <div key={index}>
-                      <Message reSent={reSent} msg={msg} seen={false} lastSeen={false} />
+                      <Message
+                        friendImage={friendImage}
+                        reSent={reSent}
+                        msg={msg}
+                        seen={false}
+                        lastSeen={false}
+                      />
                     </div>
                   );
                 })}
@@ -172,14 +202,13 @@ const Chat = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
-            <button
-              onClick={() => {
-                sendMessage();
-                scrollToBottom();
-              }}
-            >
-              Send
-            </button>
+            <img src={send} alt="" 
+            onClick=
+            {() => {
+              sendMessage();
+              scrollToBottom();
+            }}
+            />
           </div>
         </>
       )}
