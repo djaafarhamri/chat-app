@@ -24,7 +24,9 @@
     margin: 0;
     padding: 0;
 }
-
+.navbar-notification {
+    position: relative;
+}
 .navbar-notification img {
     width: 1.5em;
     height: 1.5em;
@@ -32,6 +34,17 @@
     margin-right: 10px;
     padding: 0;
     cursor: pointer;
+}
+.notification-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #fe5051;
+    border-radius: 50%;
+    color: #ebf4fb;
+    font-size: 12px;
+    padding: 2px 5px;
+    font-weight: bold;
 }
 .navbar-user {
     display: flex;

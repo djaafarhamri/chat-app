@@ -1,7 +1,7 @@
 import "./navbar.css";
 import notification from "../assets/notification.png";
 import drop_down_arrow from "../assets/drop-down-arrow.png";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../contexts/user";
 import Discover from "./Discover";
 import axios from "axios";
@@ -24,6 +24,9 @@ const Navbar = (props) => {
   const [showRequests, setShowRequests] = useState(false);
   //show friends list
   const [showList, setShowList] = useState(false);
+
+  const [friendRequests, setFriendRequests] = useState([]);
+
   const navigate = useNavigate();
   
   const exit_drop = () => {
@@ -31,6 +34,22 @@ const Navbar = (props) => {
         props.setShowDropDown(false);
     }
 }
+
+useEffect(() => {
+    axios
+    .get(`http://localhost:4000/get_friendRequests/${user.username}`)
+    .then((res) => {
+      setFriendRequests(res.data.friendRequests);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+    
+    return () => {
+      // cleanup
+    };
+  }, [user.username]);
+
 
   const logout = async () => {
     await axios
@@ -49,7 +68,7 @@ const Navbar = (props) => {
       {showChangeName && <ChangeName setShowChangeName={setShowChangeName} />}
       {showPicture && <Picture setShowPicture={setShowPicture} />}
       {showFind && <FindFriends setShowFind={setShowFind} />}
-      {showRequests && <FriendRequests setShowRequests={setShowRequests} />}
+      {showRequests && <FriendRequests friendRequests={friendRequests} setShowRequests={setShowRequests} />}
       {showList && <FriendsList setShowList={setShowList} />}
       <div className="navbar">
         <div className="navbar-logo">
@@ -57,6 +76,11 @@ const Navbar = (props) => {
         </div>
         <div className="navbar-user">
           <div className="navbar-notification">
+            {friendRequests && friendRequests.length > 0 && (
+              <div className="notification-count">
+                <p>{friendRequests.length}</p>
+              </div>
+            )}
             <img src={notification} alt="not" onClick={() => {setShowRequests(true)}}></img>
           </div>
           <div
