@@ -161,7 +161,11 @@ const Chat = (props) => {
   }, [socket, friend.username]);
 
   return (
-    <div className={`chat ${!props.activeChat && "inactive-chat"}`}>
+    <div onKeyPress={(e) => {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    }} className={`chat ${!props.activeChat && "inactive-chat"}`}>
       {room && (
         <>
           <div className="messages-container">
