@@ -1,11 +1,16 @@
 import "./changeName.css";
 import axios from "axios";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../contexts/user";
 
 const ChangeName = (props) => {
   const [user, setUser] = useContext(UserContext);
-  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState(user.first_name);
+  const [username, setUsername] = useState(user.username);
+  const [lastName, setLastName] = useState(user.last_name);
+  const [editUsername, setEditUsername] = useState(false);
+  const [editFirstName, setEditFirstName] = useState(false);
+  const [editLastName, setEditLastName] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -18,12 +23,20 @@ const ChangeName = (props) => {
     await axios
       .post(
         "http://localhost:4000/change_username",
-        { username, currentUsername: user.username },
+        {
+          username,
+          currentUsername: user.username,
+          firstName,
+          lastName,
+          editFirstName,
+          editLastName,
+          editUsername,
+        },
         { withCredentials: true }
       )
       .then((res) => {
         setSuccess("Username changed successfully");
-        setUser({ ...user, username });
+        setUser({ ...user, username, first_name: firstName, last_name: lastName });
         props.setShowChangeName(false);
       })
       .catch((err) => {
@@ -40,13 +53,67 @@ const ChangeName = (props) => {
         className="change-name"
       ></div>
       <div className="change-name-content">
-        <h2>Change your username</h2>
-        <input
-          type="text"
-          placeholder="username"
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        
+        <h2>Change your info</h2>
+        <div style={{ display: "flex", width: '100%' }}>
+          {editUsername ? (
+            <input
+              type="text"
+              placeholder="New username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              />
+              ) : (
+                <p>{user.username}</p>
+                )}
+          <button
+            onClick={() => {
+              setEditUsername(true);
+            }}
+            >
+            edit
+          </button>
+        </div>
+
+        <div style={{ display: "flex", width: '100%' }}>
+          {editFirstName ? (
+            <input
+            type="text"
+            placeholder="New first name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            />
+          ) : (
+            <p>{user.first_name}</p>
+            )}
+          <button
+            onClick={() => {
+              setEditFirstName(true);
+            }}
+            >
+            edit
+          </button>
+        </div>
+
+        <div style={{ display: "flex", width: '100%' }}>
+          {editLastName ? (
+            <input
+            type="text"
+            placeholder="New last name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            />
+          ) : (
+            <p>{user.last_name}</p>
+          )}
+          <button
+            onClick={() => {
+              setEditLastName(true);
+            }}
+          >
+            edit
+          </button>
+        </div>
+
         <div className="options-change-name">
           <button
             onClick={() => {

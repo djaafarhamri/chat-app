@@ -3,9 +3,11 @@ import image from "../assets/avatar.jpeg";
 import { useContext } from "react";
 import "./friendRequest.css";
 import { UserContext } from "../contexts/user";
+import { FriendContext } from "../contexts/friends";
 
 const FriendRequest = (props) => {
   const [user] = useContext(UserContext);
+  const [friends, setFriends] = useContext(FriendContext);
   // accept friend request
   const accept = async (friend) => {
     await axios
@@ -15,6 +17,7 @@ const FriendRequest = (props) => {
       })
       .then((res) => {
         props.setRender(!props.render);
+        setFriends(old => [...old, res.data.friend]);
       })
       .catch((err) => {
         console.log(err);

@@ -3,10 +3,11 @@ import Friend from "./Friend";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../contexts/user";
+import { FriendContext } from "../contexts/friends";
 
 const Profile = (props) => {
   const [user] = useContext(UserContext);
-  const [friends, setFriends] = useState([]);
+  const [friends, setFriends] = useContext(FriendContext);
   const [active, setActive] = useState("");
 
   useEffect(() => {
@@ -21,7 +22,7 @@ const Profile = (props) => {
     return () => {
       //
     };
-  }, [user.username]);
+  }, [setFriends, user.username]);
 
   return (
     <div

@@ -1,12 +1,8 @@
 import "./friendRequests.css";
-import { useState } from "react";
 import FriendRequest from "./FriendRequest";
 
 const FriendRequests = (props) => {
 
-  const [render, setRender] = useState([]);
-
- 
   return (
     <>
       <div
@@ -24,8 +20,8 @@ const FriendRequests = (props) => {
               return (
                 <div key={index}>
                   <FriendRequest
-                    render={render}
-                    setRender={setRender}
+                    render={props.render}
+                    setRender={props.setRender}
                     friend={friend}
                   />
                 </div>

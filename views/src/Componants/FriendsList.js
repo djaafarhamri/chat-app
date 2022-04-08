@@ -3,28 +3,13 @@ import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../contexts/user";
 import axios from "axios";
 import FriendList from "./FriendList";
+import { FriendContext } from "../contexts/friends";
 
 const FriendsList = (props) => {
   const [user] = useContext(UserContext);
 
   const [render, setRender] = useState([]);
-  const [friends, setFriends] = useState([]);
-
-  useEffect(() => {
-    axios
-    .get(`http://localhost:4000/get_friends/${user.username}`)
-    .then((res) => {
-      setFriends(res.data.friends);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-    
-    return () => {
-      // cleanup
-    };
-  }, [user.username, render]);
-
+  const [friends, setFriends] = useContext(FriendContext);
   return (
     <>
       <div

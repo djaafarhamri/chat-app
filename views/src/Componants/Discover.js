@@ -11,7 +11,7 @@ const Discover = (props) => {
         <div className="profileInfo">
           <img src={`http://localhost:4000/${user.image}`} alt="" />
           <div>
-            <h4>Djaafar Hamri</h4>
+            <h4>{`${user.first_name} ${user.last_name}`}</h4>
             <h5>Personal Account</h5>
           </div>
         </div>

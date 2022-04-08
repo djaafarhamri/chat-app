@@ -26,6 +26,7 @@ const Navbar = (props) => {
   const [showList, setShowList] = useState(false);
 
   const [friendRequests, setFriendRequests] = useState([]);
+  const [render, setRender] = useState([]);
 
   const navigate = useNavigate();
   
@@ -48,7 +49,7 @@ useEffect(() => {
     return () => {
       // cleanup
     };
-  }, [user.username]);
+  }, [user.username, render]);
 
 
   const logout = async () => {
@@ -68,7 +69,7 @@ useEffect(() => {
       {showChangeName && <ChangeName setShowChangeName={setShowChangeName} />}
       {showPicture && <Picture setShowPicture={setShowPicture} />}
       {showFind && <FindFriends setShowFind={setShowFind} />}
-      {showRequests && <FriendRequests friendRequests={friendRequests} setShowRequests={setShowRequests} />}
+      {showRequests && <FriendRequests render={render} setRender={setRender} friendRequests={friendRequests} setShowRequests={setShowRequests} />}
       {showList && <FriendsList setShowList={setShowList} />}
       <div className="navbar">
         <div className="navbar-logo">

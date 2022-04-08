@@ -65,6 +65,10 @@ module.exports.accept_request = async (req, res) => {
   const { user, friend } = req.body;
   const room = uuidv4();
   try {
+    const userD = await User.findOne({ username: friend.username });
+    if (userD.friends.some((e) => e.username === user.username)) {
+      res.status(400).json("already friends");
+    }
     await User.findOneAndUpdate(
       { username: user.username },
       { $addToSet: { friends: { ...friend, room } } },
@@ -87,12 +91,12 @@ module.exports.accept_request = async (req, res) => {
       { username: user.username },
       { $pull: { friendRequests: friend } },
       { new: true }
-    );
+      );
     await Chat.create({
       room,
-      users: [{username: user.username}, {username:friend.username}],
+      users: [{ username: user.username }, { username: friend.username }],
     });
-    res.status(200).json({ friend });
+    res.status(200).json({ friend: {...friend, room} });
   } catch (error) {
     res.status(400).json(error);
   }
@@ -133,7 +137,7 @@ module.exports.delete_friend = async (req, res) => {
         },
       }
     );
-    await Chat.findOneAndDelete({room: friend.room})
+    await Chat.findOneAndDelete({ room: friend.room });
     res.status(200).json({ friend });
   } catch (error) {
     res.status(400).json(error);
@@ -178,13 +182,48 @@ module.exports.search_users = async (req, res) => {
 
 //change username
 module.exports.change_username = async (req, res) => {
-  const { username, currentUsername } = req.body;
-  const user = await User.findOneAndUpdate(
-    { username: currentUsername },
-    { username },
-    { new: true }
-  );
-  res.status(200).json({ user });
+  const {
+    username,
+    currentUsername,
+    firstName,
+    lastName,
+    editFirstName,
+    editLastName,
+    editUsername,
+  } = req.body;
+  console.log('enter');
+  if (editFirstName) {
+    console.log("enter if 1");
+    await User.findOneAndUpdate(
+      { username: currentUsername },
+      {
+        first_name: firstName,
+      },
+      { new: true }
+      );
+    }
+    if (editLastName) {
+    console.log("enter if 2");
+    await User.findOneAndUpdate(
+      { username: currentUsername },
+      {
+        last_name: lastName,
+      },
+      { new: true }
+      );
+    }
+    if (editUsername) {
+    console.log("enter if 3");
+    await User.findOneAndUpdate(
+      { username: currentUsername },
+      {
+        username,
+      },
+      { new: true }
+    );
+  }
+  console.log('exit');
+  res.status(200).json('success');
 };
 
 //change picture

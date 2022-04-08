@@ -3,8 +3,10 @@ import image from "../assets/avatar.jpeg";
 import { useContext } from "react";
 import "./friendList.css";
 import { UserContext } from "../contexts/user";
+import { FriendContext } from "../contexts/friends";
 
 const FriendList = (props) => {
+  const [ friends, setFriends ] = useContext(FriendContext);
   const [user] = useContext(UserContext);
   const remove = async (friend) => {
     await axios
@@ -14,6 +16,7 @@ const FriendList = (props) => {
       })
       .then((res) => {
         props.setRender(!props.render);
+        setFriends(old => [...old.filter(f => f.username !== friend.username)]);
       })
       .catch((err) => {
         console.log(err);
