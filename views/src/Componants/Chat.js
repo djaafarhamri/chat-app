@@ -7,9 +7,10 @@ import { UserContext } from "../contexts/user";
 import { RoomContext } from "../contexts/room";
 import { SocketContext } from "../contexts/socket";
 
-const Chat = () => {
+const Chat = (props) => {
   const [user] = useContext(UserContext);
   const [room] = useContext(RoomContext);
+  const [isOnline, setIsOnline] = useState(false);
   const socket = useContext(SocketContext);
   const [messages, setMessages] = useState([]);
   const [friend, setFriend] = useState("");
@@ -143,11 +144,45 @@ const Chat = () => {
     scrollToBottom();
   }, [room]);
 
+  useEffect(() => {
+    socket.emit("get_online_friend", { username: friend.username });
+    socket.on("new_online_user", () => {
+      socket.emit("get_online_friend", { username: friend.username });
+    });
+    socket.on("online_friend", (data) => {
+      if (data.username === friend.username) {
+        setIsOnline(true);
+        console.log("online : " + data.username);
+      }
+    });
+    socket.on("offline_friend", (data) => {
+      if (data.username === friend.username) {
+        setIsOnline(false);
+        console.log("offline : " + data.username);
+      }
+    });
+    
+  }, [socket, friend.username]);
+
   return (
-    <div className="chat">
+    <div className={`chat ${!props.activeChat && "inactive-chat"}`}>
       {room && (
         <>
           <div className="messages-container">
+            <div onClick={() => {
+              props.setActiveChat(false);
+              props.setActiveProfile(true);
+            }} className="friend-chat-info">
+                <img src={`http://localhost:4000/${friendImage}`} alt="" />
+              <div className="friend-info">
+                <h3>{friend.username}</h3>
+                {isOnline ? (
+                  <h4 className="online-status">Online</h4>
+                ) : (
+                  <h4 className="offline-status">Offline</h4>
+                )}
+              </div>
+            </div>
             <div className="messages">
               {messages &&
                 messages.map((msg, index) => {
@@ -202,12 +237,13 @@ const Chat = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
-            <img src={send} alt="" 
-            onClick=
-            {() => {
-              sendMessage();
-              scrollToBottom();
-            }}
+            <img
+              src={send}
+              alt=""
+              onClick={() => {
+                sendMessage();
+                scrollToBottom();
+              }}
             />
           </div>
         </>

@@ -1,34 +1,36 @@
 .profile {
-    height: 90vh;
-    width: auto;
-    grid-column: 1/2;
+  height: 90vh;
+  width: auto;
+  grid-column: 1/2;
 }
 
-
 .chats {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    margin-top: 20px;
-    /* margin-left: 10px; */
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-top: 20px;
+  height: 100%;
+  position: relative;
+  overflow-y: scroll;
+  /* margin-left: 10px; */
 }
 
 .chats input {
-    width: 100%;
-    border: 0;
-    border-bottom: 1px solid;
-    padding: 10px;
-    font-size: 16px;
-    margin-bottom: 10px;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
- /* media queris 768 px */
- @media screen and (max-width: 768px) {
-    .profile {
-        border: 0;
-        position: absolute;
-        width: 100%;
-        z-index: 2;
-        display: none;
-    }
+/* media queris 768 px */
+@media screen and (max-width: 768px) {
+  
+  .inactive-profile {
+    display: none;
+  }
+  .active-profile {
+    grid-column: 1/2;
+  }
 }

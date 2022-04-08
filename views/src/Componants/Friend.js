@@ -42,6 +42,7 @@ const Friend = (props) => {
         console.log("offline : " + data.username);
       }
     });
+    
   }, [socket, props.friend.username]);
 
   return (

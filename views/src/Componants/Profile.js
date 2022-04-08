@@ -2,12 +2,12 @@ import "./profile.css";
 import Friend from "./Friend";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
-import { UserContext } from '../contexts/user';
+import { UserContext } from "../contexts/user";
 
 const Profile = (props) => {
   const [user] = useContext(UserContext);
-  const [friends, setFriends] = useState([]); 
-  const [active, setActive] = useState(''); 
+  const [friends, setFriends] = useState([]);
+  const [active, setActive] = useState("");
 
   useEffect(() => {
     axios
@@ -18,20 +18,30 @@ const Profile = (props) => {
       .catch((err) => {
         console.log(err);
       });
-      return () => {
-        //
-      }
+    return () => {
+      //
+    };
   }, [user.username]);
 
- 
   return (
-    <div className="profile">
-      
+    <div
+      className={`profile ${!props.activeProfile && "inactive-profile"} ${
+        props.activeProfile && "active-profile"
+      }`}
+    >
       <div className="chats">
         {/* <input type="text" placeholder="Search Friends" /> */}
         {friends &&
           friends.map((friend, id) => (
-            <div onClick={() => {setActive(friend.username)}} style={{width: '100%'}} key={id}>
+            <div
+              onClick={() => {
+                setActive(friend.username);
+                props.setActiveProfile(false);
+                props.setActiveChat(true);
+              }}
+              style={{ width: "100%" }}
+              key={id}
+            >
               <Friend active={active} friend={friend} />
             </div>
           ))}

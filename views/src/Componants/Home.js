@@ -8,6 +8,8 @@ import Navbar from "./Navbar";
 
 const Home = () => {
     const [showDropDown, setShowDropDown] = useState(false);
+    const [activeChat, setActiveChat] = useState(false);
+    const [activeProfile, setActiveProfile] = useState(true);
     const [user] = useContext(UserContext);
   const friend = {
     avatar: "C:/Users/EliteBooK/Desktop/projects/chat-app/uploads/avatar.jpeg",
@@ -23,8 +25,8 @@ const Home = () => {
     <div onClick={exit_drop} className="home">
         <Navbar setShowDropDown={setShowDropDown} showDropDown={showDropDown} />
       <div className="home-content">
-        <Profile user={user} />
-        <Chat friend={friend} />
+        <Profile activeProfile={activeProfile} setActiveChat={setActiveChat} setActiveProfile={setActiveProfile} user={user} />
+        <Chat activeChat={activeChat} setActiveChat={setActiveChat} setActiveProfile={setActiveProfile} friend={friend} />
         {/* <Discover user={user} /> */}
       </div>
     </div>

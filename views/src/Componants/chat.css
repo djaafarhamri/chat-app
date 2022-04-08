@@ -6,7 +6,20 @@
   background: #fafafa;
   flex-direction: column;
 }
-
+.friend-chat-info {
+  width: 100%;
+  height: auto;
+  display: flex;
+  background: #fff;
+  top: 8vh;
+  position: fixed;
+}
+.friend-chat-info img {
+  margin-left: 10px;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+}
 .chat .input {
   margin-top: auto;
   align-self: center;
@@ -51,5 +64,8 @@
   .chat {
     border: 0;
     grid-column: 1/2;
+  }
+  .inactive-chat {
+    display: none;
   }
 }
