@@ -37,3 +37,9 @@
     margin-top: 20px;
     overflow-y: scroll;
 }
+/* responsive 786 */
+@media screen and (max-width: 786px) {
+    .friends-list-content {
+        width: 90%;
+    }
+}

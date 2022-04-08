@@ -39,8 +39,14 @@
     padding: 10px;
     font-size: 16px;
 }
-.users {
+.friends-list-users {
     width: 100%;
     margin-top: 20px;
     overflow-y: scroll;
+}
+/* responsive 786 */
+@media screen and (max-width: 786px) {
+    .find-friends-content {
+        width: 90%;
+    }
 }

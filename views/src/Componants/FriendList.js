@@ -21,8 +21,10 @@ const FriendList = (props) => {
   };
   return (
     <div className="friend-list">
-      <img src={image} alt="" />
-      <h3>{props.friend.username}</h3>
+      <div style={{display: 'flex', alignItems: 'center'}}>
+        <img src={image} alt="" />
+        <h3>{props.friend.username}</h3>
+      </div>
       <button
         onClick={() => {
           remove(props.friend);

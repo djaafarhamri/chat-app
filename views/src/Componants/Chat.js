@@ -28,7 +28,6 @@ const Chat = (props) => {
 
   // receive message from server
   useEffect(() => {
-    console.log("receiveMessage");
     socket.on("receiveMessage", (data) => {
       setMessages((old) => [
         ...old,
@@ -65,7 +64,6 @@ const Chat = (props) => {
   useEffect(() => {
     socket.on("seen_server", (data) => {
       if (data.receiver !== user.username) {
-        console.log("seen", data);
         setTimeSeen(data.time);
       }
     });
@@ -152,13 +150,11 @@ const Chat = (props) => {
     socket.on("online_friend", (data) => {
       if (data.username === friend.username) {
         setIsOnline(true);
-        console.log("online : " + data.username);
       }
     });
     socket.on("offline_friend", (data) => {
       if (data.username === friend.username) {
         setIsOnline(false);
-        console.log("offline : " + data.username);
       }
     });
     
@@ -194,7 +190,6 @@ const Chat = (props) => {
                       messages[index + 1].time < friend.last_online ||
                       messages[index + 1].time < timeSeen
                     );
-                    console.log(`lastSeen ${index} : ${lastSeen}`);
                   } else if (!messages[index + 1]) {
                     lastSeen = true;
                   }

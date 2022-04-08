@@ -9,11 +9,12 @@
 }
 .change-picture-content {
   position: absolute;
+  text-align: center;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
-  width: 500px;
+  max-width: 90%;
   padding: 30px;
   /* height: 300px; */
   background-color: #fff;
@@ -39,8 +40,8 @@
 .change-picture-content button {
     cursor: pointer;
     border-radius: 20px;
-    border: 1px solid #ff4b2b;
-    background-color: #ff4b2b;
+    border: 1px solid #fe5051;
+    background-color: #fe5051;
     color: #ffffff;
     font-size: 12px;
     margin-left: auto;

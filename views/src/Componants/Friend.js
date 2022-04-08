@@ -33,13 +33,11 @@ const Friend = (props) => {
     socket.on("online_friend", (data) => {
       if (data.username === props.friend.username) {
         setIsOnline(true);
-        console.log("online : " + data.username);
       }
     });
     socket.on("offline_friend", (data) => {
       if (data.username === props.friend.username) {
         setIsOnline(false);
-        console.log("offline : " + data.username);
       }
     });
     

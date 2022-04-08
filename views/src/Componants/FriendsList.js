@@ -36,7 +36,7 @@ const FriendsList = (props) => {
 
       <div className="friends-list-content">
         <h2>Friend list</h2>
-        <div className="users">
+        <div className="friends-list-users">
           {friends &&
             friends.map((friend, index) => {
               return (

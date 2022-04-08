@@ -64,14 +64,12 @@ module.exports.send_request = async (req, res) => {
 module.exports.accept_request = async (req, res) => {
   const { user, friend } = req.body;
   const room = uuidv4();
-  console.log("friend: ", friend);
   try {
     await User.findOneAndUpdate(
       { username: user.username },
       { $addToSet: { friends: { ...friend, room } } },
       { new: true }
     );
-    console.log("friend: 1");
     await User.findOneAndUpdate(
       { username: friend.username },
       {
@@ -85,18 +83,15 @@ module.exports.accept_request = async (req, res) => {
       },
       { new: true }
     );
-    console.log("friend: 2");
     await User.findOneAndUpdate(
       { username: user.username },
       { $pull: { friendRequests: friend } },
       { new: true }
     );
-    console.log("friend: 3");
     await Chat.create({
       room,
       users: [{username: user.username}, {username:friend.username}],
     });
-    console.log("friend: 4");
     res.status(200).json({ friend });
   } catch (error) {
     res.status(400).json(error);
@@ -201,6 +196,5 @@ module.exports.change_picture = async (req, res) => {
     { image },
     { new: true }
   );
-  console.log("file : ", req.file);
   res.status(200).json({ image: user.image });
 };

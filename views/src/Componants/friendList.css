@@ -1,13 +1,13 @@
 .friend-list {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     width: 100%;
 }
 
 
 .friend-list img {
-    margin: 10px 5px;
+    margin: 5px 5px;
     border-radius: 50%;
     height: 40px;
     width: 40px;
@@ -15,4 +15,13 @@
 
 .friend-list h3 {
     font-weight: 500;
+}
+
+.friend-list button {
+    background: #fe5051;
+    padding: 10px;
+    color: #fff;
+    border: 0;
+    border-radius: 15px;
+    margin: 0px 5px;
 }

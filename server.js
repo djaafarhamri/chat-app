@@ -86,7 +86,6 @@ io.on("connection", (socket) => {
   console.log("user connected");
   socket.on("join", (data) => {
     socket.join(data.room);
-    console.log('joined room', data.room)
   });
   socket.on("sendMessage", (data) => {
     console.log("message received: ", data.room);

@@ -9,12 +9,13 @@
 }
 
 .change-name-content {
+    text-align: center;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
     z-index: 100;
-    width: 500px;
+    /* width: 500px; */
     padding: 40px;
     /* height: 300px; */
     background-color: #fff;
@@ -45,8 +46,8 @@
 .options-change-name .save {
     cursor: pointer;
     border-radius: 20px;
-    border: 1px solid #ff4b2b;
-    background-color: #ff4b2b;
+    border: 1px solid #fe5051;
+    background-color: #fe5051;
     color: #ffffff;
     font-size: 12px;
     font-weight: bold;
@@ -59,7 +60,7 @@
 .options-change-name .cancel {
     cursor: pointer;
     border-radius: 20px;
-    border: 1px solid #ff4b2b;
+    border: 1px solid #fe5051;
     background-color: #ffffff;
     color: #000000;
     font-size: 12px;
