@@ -47,3 +47,14 @@
   height: 40px;
   width: 40px;
 }
+.seen {
+  display: flex;
+}
+.seenImg {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #ebf4fb;
+  margin-left: auto;
+  margin-right: 55px;
+}

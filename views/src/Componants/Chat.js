@@ -186,21 +186,38 @@ const Chat = (props) => {
             <div className="messages">
               {messages &&
                 messages.map((msg, index) => {
+                  var lastSeen;
                   if (index !== 0) {
                     var reSent = msg.sender === messages[index - 1].sender;
                   }
                   if (messages[index + 1]) {
-                    var lastSeen = !(
+                    lastSeen = !(
                       messages[index + 1].time < friend.last_online ||
                       messages[index + 1].time < timeSeen
                     );
+                    for (let i=1; i<messages.length; i++) {
+                      if (messages[index + i]) {
+                        if (messages[index + i].sender === user.username) {
+                          lastSeen = !(
+                            messages[index + i].time < friend.last_online ||
+                            messages[index + i].time < timeSeen
+                          );
+                          break;
+                        }
+                      }
+                    
+                      if (messages[index + 1] && !messages[index + i] && messages[index + 1].sender !== user.username) {
+                        lastSeen = true;
+                      }
+                    }
                   } else if (!messages[index + 1]) {
                     lastSeen = true;
                   }
                   if (
                     msg.sender === user.username &&
                     (msg.time < friend.last_online || msg.time < timeSeen)
-                  ) {
+                    ) {
+                    console.log('last seen 2');
                     return (
                       <div key={index}>
                         <Message
