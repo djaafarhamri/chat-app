@@ -25,4 +25,9 @@
     border-radius: 15px;
     margin-left: auto;
     margin-right: 10px;
+    cursor: pointer;
+}
+.friend-request-buttons {
+    margin-left: auto;
+
 }

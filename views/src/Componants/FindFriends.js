@@ -18,7 +18,19 @@ const FindFriends = (props) => {
         console.log(err);
       });
   };
-
+  const add = async (friend) => {
+    await axios
+      .post("http://localhost:4000/send_request", {
+        user,
+        friend,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <div
@@ -41,7 +53,7 @@ const FindFriends = (props) => {
         <div className="users">
           {friends &&
             friends.map((friend) => {
-              return <User type='user' user={user} friend={friend} />;
+              return <User add={() => add(friend)} type='user' user={user} friend={friend} />;
             })}
         </div>
       </div>

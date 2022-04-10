@@ -3,12 +3,28 @@ import { useState, useContext } from "react";
 import { UserContext } from "../contexts/user";
 import { FriendContext } from "../contexts/friends";
 import User from "./User";
+import axios from "axios";
 
 const FriendsList = (props) => {
   const [user] = useContext(UserContext);
-
   const [render, setRender] = useState([]);
   const [friends, setFriends] = useContext(FriendContext);
+  const remove = async (friend) => {
+    await axios
+      .post(`http://localhost:4000/delete_friend`, {
+        user,
+        friend,
+      })
+      .then((res) => {
+        setRender(!render);
+        setFriends((old) => [
+          ...old.filter((f) => f.username !== friend.username),
+        ]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <div
@@ -26,9 +42,8 @@ const FriendsList = (props) => {
               return (
                 <div key={index}>
                   <User
-                  type='friend-list'
-                    render={render}
-                    setRender={setRender}
+                    remove={() => remove(friend)}
+                    type='friend-list'
                     friend={friend}
                   />
                 </div>
