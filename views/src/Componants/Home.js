@@ -1,5 +1,4 @@
 import Chat from "./Chat";
-import Discover from "./Discover";
 import "./home.css";
 import Profile from "./Profile";
 import { UserContext } from "../contexts/user";
@@ -11,11 +10,6 @@ const Home = () => {
     const [activeChat, setActiveChat] = useState(false);
     const [activeProfile, setActiveProfile] = useState(true);
     const [user] = useContext(UserContext);
-  const friend = {
-    avatar: "C:/Users/EliteBooK/Desktop/projects/chat-app/uploads/avatar.jpeg",
-    username: "Felix",
-    email: "Felix@gmail.com",
-  };
   const exit_drop = () => {
     if (showDropDown) {
         setShowDropDown(false);
@@ -26,7 +20,7 @@ const Home = () => {
         <Navbar setShowDropDown={setShowDropDown} showDropDown={showDropDown} />
       <div className="home-content">
         <Profile activeProfile={activeProfile} setActiveChat={setActiveChat} setActiveProfile={setActiveProfile} user={user} />
-        <Chat activeChat={activeChat} setActiveChat={setActiveChat} setActiveProfile={setActiveProfile} friend={friend} />
+        <Chat activeChat={activeChat} setActiveChat={setActiveChat} setActiveProfile={setActiveProfile} />
         {/* <Discover user={user} /> */}
       </div>
     </div>

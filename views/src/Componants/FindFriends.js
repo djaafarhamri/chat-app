@@ -3,10 +3,12 @@ import "./findFriends.css";
 import axios from "axios";
 import { useState, useContext } from "react";
 import { UserContext } from "../contexts/user";
+import { SocketContext } from "../contexts/socket";
 
 const FindFriends = (props) => {
   const [user] = useContext(UserContext);
   const [friends, setFriends] = useState([]);
+  const socket = useContext(SocketContext);
 
   const search = async (username) => {
     await axios
@@ -19,6 +21,10 @@ const FindFriends = (props) => {
       });
   };
   const add = async (friend) => {
+    socket.emit("friend-request", {
+      user,
+      friend,
+    });
     await axios
       .post("http://localhost:4000/send_request", {
         user,
@@ -53,7 +59,14 @@ const FindFriends = (props) => {
         <div className="users">
           {friends &&
             friends.map((friend) => {
-              return <User add={() => add(friend)} type='user' user={user} friend={friend} />;
+              return (
+                <User
+                  add={() => add(friend)}
+                  type="user"
+                  user={user}
+                  friend={friend}
+                />
+              );
             })}
         </div>
       </div>

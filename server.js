@@ -51,8 +51,8 @@ app.use((req, res, next) => {
 //app.use(cors())
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use('/uploads', express.static(path.join(__dirname, "uploads")));
+app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.static("public"));
 // app.use(
 //   session({
@@ -77,7 +77,9 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("new_online_user");
   });
   socket.on("get_online_friend", (data) => {
-    const username = online_users.find((user) => user.username === data.username);
+    const username = online_users.find(
+      (user) => user.username === data.username
+    );
     if (username) {
       io.emit("online_friend", username);
     }
@@ -95,9 +97,20 @@ io.on("connection", (socket) => {
       time: data.time,
     });
   });
+  socket.on("friend-request", (data) => {
+    var friend_id = online_users.find(
+      (user) => user.username === data.friend.username
+    );
+    if (friend_id) {
+      io.to(friend_id.socket_id).emit("friend-request-received", {
+        sender: data.user,
+      });
+    }
+    console.log("sent to :");
+  });
   //seen
   socket.on("seen_user", (data) => {
-    console.log('seeeeeeeeeeeeen, ', data)
+    console.log("seeeeeeeeeeeeen, ", data);
     io.in(data.room).emit("seen_server", {
       receiver: data.receiver,
       time: data.time,
@@ -110,10 +123,10 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     online_users = online_users.filter((e) => e.socket_id !== socket.id);
     const username = online_users.map((user) => {
-      if(user.socket_id === socket.id) return user.username;
+      if (user.socket_id === socket.id) return user.username;
     });
     if (username) {
-      io.emit("offline_friend", {username: username.username});
+      io.emit("offline_friend", { username: username.username });
     }
     console.log("user disconnected");
   });

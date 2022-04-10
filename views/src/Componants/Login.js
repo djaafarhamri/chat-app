@@ -7,7 +7,6 @@ import { UserContext } from "../contexts/user";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
   const [user, setUser] = useContext(UserContext);
 
@@ -19,12 +18,12 @@ const Login = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        if (res.data === "error") return setError("error");
+        if (res.data === "error") return ;
         setUser(res.data.user);
         return navigate("/");
       })
       .catch((err) => {
-        setError(err.message);
+        console.log(err.message);
       });
   };
   return (

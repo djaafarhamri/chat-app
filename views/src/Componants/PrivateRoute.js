@@ -6,23 +6,21 @@ import { UserContext } from "../contexts/user";
 
 const PrivateRoute = ({ children }) => {
   const [user, setUser] = useContext(UserContext);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
     axios
       .get("http://localhost:4000/check-user", { withCredentials: true })
       .then((res) => {
-        setIsAuthenticated(true);
         setIsLoading(false);
         setUser(res.data.user);
       })
       .catch((err) => {
         navigate("/sign-in");
       });
-  }, [isAuthenticated, isLoading, navigate, setUser]);
+  }, [isLoading, navigate, setUser]);
 
-  return isLoading ? <p>loading...</p> : children;
+  return user ? children : <p>loading...</p>;
 };
 
 export default PrivateRoute;

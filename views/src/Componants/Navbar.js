@@ -11,16 +11,19 @@ import FindFriends from "./FindFriends";
 import FriendRequests from "./FriendRequests";
 import FriendsList from "./FriendsList";
 import Picture from "./Picture";
+import { SocketContext } from "../contexts/socket";
 import { useDataSource } from "../hooks/useDataSource";
 
 const Navbar = (props) => {
-    const [user] = useContext(UserContext);
-    //setShowChangeName
-    const [showChangeName, setShowChangeName] = useState(false);
-    //setShowPicture
-    const [showPicture, setShowPicture] = useState(false);
-    //showfind
-    const [showFind, setShowFind] = useState(false);
+  const [user] = useContext(UserContext);
+  const socket = useContext(SocketContext);
+
+  //setShowChangeName
+  const [showChangeName, setShowChangeName] = useState(false);
+  //setShowPicture
+  const [showPicture, setShowPicture] = useState(false);
+  //showfind
+  const [showFind, setShowFind] = useState(false);
   //show requests
   const [showRequests, setShowRequests] = useState(false);
   //show friends list
@@ -30,15 +33,26 @@ const Navbar = (props) => {
   const [render, setRender] = useState([]);
 
   const navigate = useNavigate();
-  
+
   const exit_drop = () => {
     if (props.showDropDown) {
-        props.setShowDropDown(false);
+      props.setShowDropDown(false);
     }
-}
+  };
 
-  const friendRequests = useDataSource(`http://localhost:4000/get_friendRequests/${user.username}`, render).data.friendRequests
-
+  const friendRequests = useDataSource(
+    `http://localhost:4000/get_friendRequests/${user.username}`,
+    render
+  ).data.friendRequests;
+  useEffect(() => {
+    socket.on("friend-request-received", (data) => {
+      console.log("friend request received");
+      setRender(!render);
+    });
+    return () => {
+      socket.off("friend-request-received");
+    };
+  }, [render, socket]);
 
   const logout = async () => {
     await axios
@@ -51,13 +65,19 @@ const Navbar = (props) => {
       });
   };
 
-
   return (
     <div onClick={exit_drop} className="nav">
       {showChangeName && <ChangeName setShowChangeName={setShowChangeName} />}
       {showPicture && <Picture setShowPicture={setShowPicture} />}
       {showFind && <FindFriends setShowFind={setShowFind} />}
-      {showRequests && <FriendRequests render={render} setRender={setRender} friendRequests={friendRequests} setShowRequests={setShowRequests} />}
+      {showRequests && (
+        <FriendRequests
+          render={render}
+          setRender={setRender}
+          friendRequests={friendRequests}
+          setShowRequests={setShowRequests}
+        />
+      )}
       {showList && <FriendsList setShowList={setShowList} />}
       <div className="navbar">
         <div className="navbar-logo">
@@ -70,7 +90,13 @@ const Navbar = (props) => {
                 <p>{friendRequests.length}</p>
               </div>
             )}
-            <img src={notification} alt="not" onClick={() => {setShowRequests(true)}}></img>
+            <img
+              src={notification}
+              alt="not"
+              onClick={() => {
+                setShowRequests(true);
+              }}
+            ></img>
           </div>
           <div
             onClick={() => {
@@ -89,7 +115,7 @@ const Navbar = (props) => {
             )}
 
             <div className="navbar-user-img">
-              <img src={`http://localhost:4000/${user.image}`} alt="" />
+              <img src={`http://localhost:4000/${user.image}`} alt="lol" />
             </div>
             <div className="navbar-user-name">
               <h4>{user.username}</h4>
