@@ -7,14 +7,13 @@ import { UserContext } from "../contexts/user";
 import { RoomContext } from "../contexts/room";
 import { SocketContext } from "../contexts/socket";
 import { useDataSource } from "../hooks/useDataSource";
+import { useRoom } from "../hooks/useRoom";
 
 const Chat = (props) => {
   const [user] = useContext(UserContext);
   const [room] = useContext(RoomContext);
-  const [isOnline, setIsOnline] = useState(false);
   const socket = useContext(SocketContext);
-  const [messages, setMessages] = useState([]);
-  const [friend, setFriend] = useState("");
+  const [isOnline, setIsOnline] = useState(false);
   const [timeSeen, setTimeSeen] = useState(null);
   const [message, setMessage] = useState("");
   const messagesEndRef = useRef(null);
@@ -27,6 +26,7 @@ const Chat = (props) => {
   }, [socket, user.username]);
 
   // receive message from server
+  const { messages, friend, setMessages } = useRoom(scrollToBottom);
   useEffect(() => {
     socket.on("receiveMessage", (data) => {
       setMessages((old) => [
@@ -44,8 +44,8 @@ const Chat = (props) => {
     return () => {
       socket.off("receiveMessage");
     };
-  }, [room, socket, user.username]);
-
+  }, [room, setMessages, socket, user.username]);
+  
   const friendImage = useDataSource(`http://localhost:4000/get_friend_image/${friend.username}`).data.image
   // seen
   useEffect(() => {
@@ -58,49 +58,7 @@ const Chat = (props) => {
       socket.off("seen_server");
     };
   }, [socket, user.username]);
-  // get messages
-  useEffect(() => {
-    if (room) {
-      socket.emit("join", {
-        room,
-      });
-      socket.emit("seen_user", {
-        receiver: user.username,
-        room,
-        time: Date.now(),
-      });
-      axios
-        .get(`http://localhost:4000/get_messages/${room}`)
-        .then((res) => {
-          setMessages(res.data.messages);
-          setFriend(() => {
-            return res.data.users.filter(
-              (us) => us.username !== user.username
-            )[0];
-          });
-          scrollToBottom();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
 
-      axios
-        .post(`http://localhost:4000/update_last_online`, {
-          room,
-          username: user.username,
-        })
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((err) => console.log(err));
-    }
-    return () => {
-      socket.emit("leave", {
-        room,
-      });
-    };
-  }, [room, socket, user.username]);
-  
   // send message
   const sendMessage = async () => {
     scrollToBottom();
@@ -128,7 +86,7 @@ const Chat = (props) => {
   // scroll to bottom
   useEffect(() => {
     scrollToBottom();
-  }, [room]);
+  }, [room, messages]);
 
   useEffect(() => {
     socket.emit("get_online_friend", { username: friend.username });
