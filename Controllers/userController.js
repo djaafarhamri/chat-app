@@ -69,10 +69,12 @@ module.exports.accept_request = async (req, res) => {
     if (userD.friends.some((e) => e.username === user.username)) {
       res.status(400).json("already friends");
     }
-    await User.findOneAndUpdate(
-      { username: user.username },
-      { $addToSet: { friends: { ...friend, room } } },
-      { new: true }
+    else {
+
+      await User.findOneAndUpdate(
+        { username: user.username },
+        { $addToSet: { friends: { ...friend, room } } },
+        { new: true }
     );
     await User.findOneAndUpdate(
       { username: friend.username },
@@ -86,17 +88,18 @@ module.exports.accept_request = async (req, res) => {
         },
       },
       { new: true }
-    );
-    await User.findOneAndUpdate(
+      );
+    }
+      await User.findOneAndUpdate(
       { username: user.username },
       { $pull: { friendRequests: friend } },
       { new: true }
       );
-    await Chat.create({
-      room,
-      users: [{ username: user.username }, { username: friend.username }],
-    });
-    res.status(200).json({ friend: {...friend, room} });
+      await Chat.create({
+        room,
+        users: [{ username: user.username }, { username: friend.username }],
+      });
+      res.status(200).json({ friend: {...friend, room} });
   } catch (error) {
     res.status(400).json(error);
   }
@@ -132,7 +135,6 @@ module.exports.delete_friend = async (req, res) => {
           friends: {
             username: user.username,
             room: friend.room,
-            _id: user._id,
           },
         },
       }

@@ -2,27 +2,14 @@ import "./friend.css";
 import { useContext, useEffect, useState } from "react";
 import { RoomContext } from "../contexts/room";
 import { SocketContext } from "../contexts/socket";
-import axios from "axios";
+import { useDataSource } from "../hooks/useDataSource";
 
 const Friend = (props) => {
   const [room, setRoom] = useContext(RoomContext);
   const socket = useContext(SocketContext);
   const [isOnline, setIsOnline] = useState(false);
-  const [image, setImage] = useState(null); 
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:4000/get_friend_image/${props.friend.username}`)
-      .then((res) => {
-        setImage(res.data.image);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-      return () => {
-        //
-      }
-  }, [props.friend.username]);
+  const image = useDataSource(`http://localhost:4000/get_friend_image/${props.friend.username}`).data.image
 
 
   useEffect(() => {

@@ -1,12 +1,12 @@
 import axios from "axios";
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import "./friendList.css";
 import { UserContext } from "../contexts/user";
 import { FriendContext } from "../contexts/friends";
+import { useDataSource } from "../hooks/useDataSource";
 
 const FriendList = (props) => {
   const [ friends, setFriends ] = useContext(FriendContext);
-  const [ image, setImage ] = useState();
   const [user] = useContext(UserContext);
 
   const remove = async (friend) => {
@@ -23,19 +23,8 @@ const FriendList = (props) => {
         console.log(err);
       });
   };
-  useEffect(() => {
-    axios
-      .get(`http://localhost:4000/get_friend_image/${props.friend.username}`)
-      .then((res) => {
-        setImage(res.data.image);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-      return () => {
-        //
-      }
-  }, [props.friend.username]);
+  
+  const image = useDataSource(`http://localhost:4000/get_friend_image/${props.friend.username}`).data.image
 
 
   return (

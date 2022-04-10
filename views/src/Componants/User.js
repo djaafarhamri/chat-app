@@ -1,10 +1,9 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useDataSource } from '../hooks/useDataSource';
 import './user.css';
 
 
 const User = (props) => {
-    const [image, setImage] = useState();
     // send request
     const add = async () => {
         await axios.post('http://localhost:4000/send_request', {
@@ -16,20 +15,8 @@ const User = (props) => {
             console.log(err);
         });
     }
-    useEffect(() => {
-        axios
-          .get(`http://localhost:4000/get_friend_image/${props.friend.username}`)
-          .then((res) => {
-            setImage(res.data.image);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-          return () => {
-            //
-          }
-      }, [props.friend.username]);
-    
+    const image = useDataSource(`http://localhost:4000/get_friend_image/${props.friend.username}`).data.image
+
     
     return ( 
         <div className="user">

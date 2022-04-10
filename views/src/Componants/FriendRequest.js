@@ -1,14 +1,13 @@
 import axios from "axios";
-import image from "../assets/avatar.jpeg";
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import "./friendRequest.css";
 import { UserContext } from "../contexts/user";
 import { FriendContext } from "../contexts/friends";
+import { useDataSource } from "../hooks/useDataSource";
 
 const FriendRequest = (props) => {
   const [user] = useContext(UserContext);
   const [friends, setFriends] = useContext(FriendContext);
-  const [ image, setImage ] = useState();
   // accept friend request
   const accept = async (friend) => {
     await axios
@@ -38,19 +37,8 @@ const FriendRequest = (props) => {
       console.log(err);
     });
   };
-  useEffect(() => {
-    axios
-      .get(`http://localhost:4000/get_friend_image/${props.friend.username}`)
-      .then((res) => {
-        setImage(res.data.image);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-      return () => {
-        //
-      }
-  }, [props.friend.username]);
+  
+  const image = useDataSource(`http://localhost:4000/get_friend_image/${props.friend.username}`).data.image
 
 
 

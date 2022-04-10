@@ -6,6 +6,7 @@ import send from "../assets/send.png";
 import { UserContext } from "../contexts/user";
 import { RoomContext } from "../contexts/room";
 import { SocketContext } from "../contexts/socket";
+import { useDataSource } from "../hooks/useDataSource";
 
 const Chat = (props) => {
   const [user] = useContext(UserContext);
@@ -14,7 +15,6 @@ const Chat = (props) => {
   const socket = useContext(SocketContext);
   const [messages, setMessages] = useState([]);
   const [friend, setFriend] = useState("");
-  const [friendImage, setFriendImage] = useState("");
   const [timeSeen, setTimeSeen] = useState(null);
   const [message, setMessage] = useState("");
   const messagesEndRef = useRef(null);
@@ -46,20 +46,7 @@ const Chat = (props) => {
     };
   }, [room, socket, user.username]);
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:4000/get_friend_image/${friend.username}`)
-      .then((res) => {
-        setFriendImage(res.data.image);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    return () => {
-      //
-    };
-  }, [friend.username]);
-
+  const friendImage = useDataSource(`http://localhost:4000/get_friend_image/${friend.username}`).data.image
   // seen
   useEffect(() => {
     socket.on("seen_server", (data) => {
@@ -113,6 +100,7 @@ const Chat = (props) => {
       });
     };
   }, [room, socket, user.username]);
+  
   // send message
   const sendMessage = async () => {
     scrollToBottom();

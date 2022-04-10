@@ -11,6 +11,7 @@ import FindFriends from "./FindFriends";
 import FriendRequests from "./FriendRequests";
 import FriendsList from "./FriendsList";
 import Picture from "./Picture";
+import { useDataSource } from "../hooks/useDataSource";
 
 const Navbar = (props) => {
     const [user] = useContext(UserContext);
@@ -25,7 +26,7 @@ const Navbar = (props) => {
   //show friends list
   const [showList, setShowList] = useState(false);
 
-  const [friendRequests, setFriendRequests] = useState([]);
+  // const [friendRequests, setFriendRequests] = useState([]);
   const [render, setRender] = useState([]);
 
   const navigate = useNavigate();
@@ -36,20 +37,7 @@ const Navbar = (props) => {
     }
 }
 
-useEffect(() => {
-    axios
-    .get(`http://localhost:4000/get_friendRequests/${user.username}`)
-    .then((res) => {
-      setFriendRequests(res.data.friendRequests);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-    
-    return () => {
-      // cleanup
-    };
-  }, [user.username, render]);
+  const friendRequests = useDataSource(`http://localhost:4000/get_friendRequests/${user.username}`, render).data.friendRequests
 
 
   const logout = async () => {
