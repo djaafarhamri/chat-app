@@ -1,5 +1,5 @@
 import "./friendRequests.css";
-import FriendRequest from "./FriendRequest";
+import User from "./User";
 
 const FriendRequests = (props) => {
 
@@ -19,7 +19,8 @@ const FriendRequests = (props) => {
             props.friendRequests.map((friend, index) => {
               return (
                 <div key={index}>
-                  <FriendRequest
+                  <User
+                  type='friend-request'
                     render={props.render}
                     setRender={props.setRender}
                     friend={friend}

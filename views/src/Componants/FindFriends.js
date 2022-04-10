@@ -41,7 +41,7 @@ const FindFriends = (props) => {
         <div className="users">
           {friends &&
             friends.map((friend) => {
-              return <User user={user} friend={friend} />;
+              return <User type='user' user={user} friend={friend} />;
             })}
         </div>
       </div>

@@ -1,9 +1,8 @@
 import "./friendsList.css";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { UserContext } from "../contexts/user";
-import axios from "axios";
-import FriendList from "./FriendList";
 import { FriendContext } from "../contexts/friends";
+import User from "./User";
 
 const FriendsList = (props) => {
   const [user] = useContext(UserContext);
@@ -26,7 +25,8 @@ const FriendsList = (props) => {
             friends.map((friend, index) => {
               return (
                 <div key={index}>
-                  <FriendList
+                  <User
+                  type='friend-list'
                     render={render}
                     setRender={setRender}
                     friend={friend}
