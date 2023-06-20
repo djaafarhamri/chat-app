@@ -19,6 +19,6 @@ export const useDataSource = (dataSource, render) => {
     };
     fetchData();
   }, [dataSource, render]);
-
+  console.log(data)
   return { data, loading, error };
 }

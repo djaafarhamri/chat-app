@@ -7,7 +7,7 @@ const userSchema = mongoose.Schema(
   {
     image: {
       type: String,
-      default: path.join(__dirname, "uploads", "avatar.jpeg"),
+      default: path.join(__dirname, "uploads", "avatar.jpg"),
     },
     email: {
       type: String,
@@ -17,14 +17,14 @@ const userSchema = mongoose.Schema(
     },
     first_name: {
       type: String,
-      required: [true, "please enter your first name"],
+      // required: [true, "please enter your first name"],
     },
     middle_name: {
       type: String,
     },
     last_name: {
       type: String,
-      required: [true, "please enter your last name"],
+      // required: [true, "please enter your last name"],
     },
     username: {
       type: String,
@@ -50,7 +50,6 @@ const userSchema = mongoose.Schema(
       {
         username: {
           type: String,
-          unique: true,
         },
       },
     ],
@@ -65,8 +64,8 @@ userSchema.pre("save", async function (next) {
 });
 
 //login
-userSchema.statics.login = async function (username, password) {
-  const user = await this.findOne({ username });
+userSchema.statics.login = async function (email, password) {
+  const user = await this.findOne({ email });
   if (user) {
     const auth = await bcrypt.compare(password, user.password);
     if (auth) {

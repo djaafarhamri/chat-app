@@ -1,5 +1,6 @@
-const User = require("../models/User");
-const Chat = require("../models/Chat");
+const User = require("../Models/User");
+const Chat = require("../Models/Chat");
+const jwt = require("jsonwebtoken");
 const uuidv4 = require("uuid").v4;
 
 module.exports.sign_up = async (req, res) => {
@@ -8,23 +9,35 @@ module.exports.sign_up = async (req, res) => {
     const user = await User.create({ email, username, password });
     res.status(200).json({ user });
   } catch (err) {
+    console.log(err);
     res.status(400).json(err);
   }
 };
 
-module.exports.sign_in = (req, res) => {};
-
-module.exports.success_login = (req, res) => {
-  res.status(200).json({ user: req.user });
+const maxAge = 3 * 24 * 60 * 60;
+const createToken = (id) => {
+  return jwt.sign({ id }, "test", {
+    expiresIn: maxAge,
+  });
 };
 
-module.exports.failed_login = (req, res) => {
-  res.status(400).json("error");
+module.exports.sign_in = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.login(email, password);
+    const token = createToken(user._id);
+    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.status(201).json({ user });
+  } catch (err) {
+    const errors = console.log(err);
+    res.status(400).json({ errors });
+  }
 };
 
 module.exports.check_user = (req, res) => {
-  if (req.isAuthenticated()) {
-    res.status(200).json({ user: req.user });
+  console.log("curr: ", req.currUser);
+  if (req.currUser) {
+    res.status(200).json({ user: req.currUser });
   } else {
     res.status(400).json("error");
   }
@@ -68,43 +81,45 @@ module.exports.accept_request = async (req, res) => {
     const userD = await User.findOne({ username: friend.username });
     if (userD.friends.some((e) => e.username === user.username)) {
       res.status(400).json("already friends");
-    }
-    else {
-
+    } else {
+      console.log("friend from friendR: ", friend);
+      console.log("user from friendR: ", user);
       await User.findOneAndUpdate(
         { username: user.username },
         { $addToSet: { friends: { ...friend, room } } },
         { new: true }
-    );
-    await User.findOneAndUpdate(
-      { username: friend.username },
-      {
-        $addToSet: {
-          friends: {
-            username: user.username,
-            _id: user._id,
-            room,
+      );
+      console.log("friend: ", friend);
+      await User.findOneAndUpdate(
+        { username: friend.username },
+        {
+          $addToSet: {
+            friends: {
+              username: user.username,
+              _id: user._id,
+              room,
+            },
           },
         },
-      },
-      { new: true }
+        { new: true }
       );
-    }
+      console.log("pls work");
       await User.findOneAndUpdate(
-      { username: user.username },
-      { $pull: { friendRequests: friend } },
-      { new: true }
+        { username: user.username },
+        { $pull: { friendRequests: { username: friend.username } } },
+        { new: true }
       );
+      console.log("pls work 2");
       await Chat.create({
         room,
         users: [{ username: user.username }, { username: friend.username }],
       });
-      res.status(200).json({ friend: {...friend, room} });
+      res.status(200).json({ friend: { ...friend, room } });
+    }
   } catch (error) {
     res.status(400).json(error);
   }
 
-  res.status(200);
 };
 
 module.exports.decline_request = async (req, res) => {
@@ -169,7 +184,7 @@ module.exports.get_friend_image = async (req, res) => {
 module.exports.get_friendRequests = async (req, res) => {
   const { username } = req.params;
   const user = await User.findOne({ username });
-  res.status(200).json({ friendRequests: user.friendRequests });
+  res.status(200).json({ friendRequests: user?.friendRequests });
 };
 // search with regex
 module.exports.search_users = async (req, res) => {
@@ -193,7 +208,7 @@ module.exports.change_username = async (req, res) => {
     editLastName,
     editUsername,
   } = req.body;
-  console.log('enter');
+  console.log("enter");
   if (editFirstName) {
     console.log("enter if 1");
     await User.findOneAndUpdate(
@@ -202,9 +217,9 @@ module.exports.change_username = async (req, res) => {
         first_name: firstName,
       },
       { new: true }
-      );
-    }
-    if (editLastName) {
+    );
+  }
+  if (editLastName) {
     console.log("enter if 2");
     await User.findOneAndUpdate(
       { username: currentUsername },
@@ -212,9 +227,9 @@ module.exports.change_username = async (req, res) => {
         last_name: lastName,
       },
       { new: true }
-      );
-    }
-    if (editUsername) {
+    );
+  }
+  if (editUsername) {
     console.log("enter if 3");
     await User.findOneAndUpdate(
       { username: currentUsername },
@@ -224,14 +239,15 @@ module.exports.change_username = async (req, res) => {
       { new: true }
     );
   }
-  console.log('exit');
-  res.status(200).json('success');
+  console.log("exit");
+  res.status(200).json("success");
 };
 
 //change picture
 module.exports.change_picture = async (req, res) => {
   const { username } = req.body;
   const image = req.file.path;
+  console.log("image: ", image);
   const user = await User.findOneAndUpdate(
     { username },
     { image },

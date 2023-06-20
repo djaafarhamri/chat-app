@@ -17,7 +17,7 @@ const chatRoute = require("./Routes/chatRoute");
 const session = require("express-session");
 
 mongoose
-  .connect("mongodb://localhost:27017/chat-app", {
+  .connect("mongodb://0.0.0.0:27017/chat-app", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -108,6 +108,17 @@ io.on("connection", (socket) => {
     }
     console.log("sent to :");
   });
+  socket.on("friend-request-accepted", (data) => {
+    var friend_id = online_users.find(
+      (user) => user.username === data.friend?.username
+    );
+    if (friend_id) {
+      io.to(friend_id.socket_id).emit("friend-request-accepted-received", {
+        sender: data.user,
+      });
+    }
+    console.log("sent to :");
+  });
   //seen
   socket.on("seen_user", (data) => {
     console.log("seeeeeeeeeeeeen, ", data);
@@ -120,6 +131,17 @@ io.on("connection", (socket) => {
   socket.on("leave", (data) => {
     socket.leave(data.room);
   });
+  socket.on("logout", (data) => {
+    online_users = online_users.filter((e) => e.socket_id !== socket.id);
+    const username = online_users.map((user) => {
+      if (user.socket_id === socket.id) return user.username;
+    });
+    if (username) {
+      io.emit("offline_friend", { username: username.username });
+    }
+    console.log("user disconnected");
+  });
+
   socket.on("disconnect", () => {
     online_users = online_users.filter((e) => e.socket_id !== socket.id);
     const username = online_users.map((user) => {

@@ -5,7 +5,7 @@ import { useState, useContext } from "react";
 import { UserContext } from "../contexts/user";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [user, setUser] = useContext(UserContext);
@@ -14,7 +14,7 @@ const Login = () => {
     axios
       .post(
         "http://localhost:4000/sign_in",
-        { username, password },
+        { email, password },
         { withCredentials: true }
       )
       .then((res) => {
@@ -41,8 +41,8 @@ const Login = () => {
             <h1>Sign in</h1>
             <input
               type="text"
-              placeholder="Username"
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="email"
+              onChange={(e) => setEmail(e.target.value)}
             />
             <input
               type="password"

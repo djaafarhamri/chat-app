@@ -4,6 +4,7 @@ import axios from "axios";
 import { UserContext } from "../contexts/user";
 import { FriendContext } from "../contexts/friends";
 import { useContext } from "react";
+import { socket } from "../contexts/socket";
 
 const FriendRequests = (props) => {
   const [user] = useContext(UserContext);
@@ -16,6 +17,10 @@ const FriendRequests = (props) => {
         friend,
       })
       .then((res) => {
+        socket.emit("friend-request-accepted", {
+          user_id: user._id,
+          friend_id: friend._id,
+        });
         props.setRender(!props.render);
         setFriends((old) => [...old, res.data.friend]);
       })

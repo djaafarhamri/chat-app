@@ -99,6 +99,7 @@ const Chat = (props) => {
       }
     });
     socket.on("offline_friend", (data) => {
+      console.log("offline_friend", data)
       if (data.username === friend.username) {
         setIsOnline(false);
       }

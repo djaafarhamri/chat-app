@@ -16,6 +16,7 @@ import { useDataSource } from "../hooks/useDataSource";
 
 const Navbar = (props) => {
   const [user] = useContext(UserContext);
+  console.log("user from navbar", user);	
   const socket = useContext(SocketContext);
 
   //setShowChangeName
@@ -30,7 +31,7 @@ const Navbar = (props) => {
   const [showList, setShowList] = useState(false);
 
   // const [friendRequests, setFriendRequests] = useState([]);
-  const [render, setRender] = useState([]);
+  const [render, setRender] = useState(false);
 
   const navigate = useNavigate();
 
@@ -54,10 +55,22 @@ const Navbar = (props) => {
     };
   }, [render, socket]);
 
+  useEffect(() => {
+    socket.on("friend-request-accepted-received", (data) => {
+      console.log("friend request received");
+      setRender(!render);
+    });
+    return () => {
+      socket.off("friend-request-received");
+    };
+  }, [render, socket]);
+
+
   const logout = async () => {
     await axios
       .get("http://localhost:4000/logout", { withCredentials: true })
       .then((res) => {
+        socket.emit("logout", { user_id: user._id});
         navigate("/sign-in");
       })
       .catch((err) => {

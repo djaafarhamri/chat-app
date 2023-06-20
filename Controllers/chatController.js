@@ -1,4 +1,4 @@
-const Chat = require("../models/Chat");
+const Chat = require("../Models/Chat");
 
 module.exports.send_message = async (req, res) => {
   const { room, sender, message } = req.body;
