@@ -16,12 +16,11 @@ const PrivateRoute = ({ children }) => {
         setUser(res.data.user);
       })
       .catch((err) => {
-        alert('not checked in')
         navigate("/sign-in");
       });
   }, [isLoading, navigate, setUser]);
-
-  return user ? children : <p>loading...</p>;
+  if (isLoading) return <p>loading...</p>;
+  if (user) return children;
 };
 
 export default PrivateRoute;

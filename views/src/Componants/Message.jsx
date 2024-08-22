@@ -1,17 +1,24 @@
 import "./message.css";
 import { useContext } from "react";
-const { UserContext } = require("../contexts/user");
+import { UserContext } from "../contexts/user";
+import avatar from "../assets/avatar.jpeg";
 
 const Message = (props) => {
   const [user] = useContext(UserContext);
-  console.log('last seen', props.lastSeen);
   return (
     <>
       <div className="message">
         {props.msg.sender !== user.username ? (
           <div className="message-received">
             {!props.reSent ? (
-              <img src={`http://localhost:4000/${props.friendImage}`} alt="" />
+              props.friendImage ? (
+                <img
+                  src={`http://localhost:4000/${props.friendImage}`}
+                  alt="lol"
+                />
+              ) : (
+                <img src={avatar} alt="lol" />
+              )
             ) : (
               <div
                 style={{ height: "40px", width: "40px", margin: "0 5px" }}
@@ -23,7 +30,11 @@ const Message = (props) => {
           <div className="message-sent">
             <h4>{props.msg.message}</h4>
             {!props.reSent ? (
-              <img src={`http://localhost:4000/${user.image}`} alt="" />
+              user?.image ? (
+                <img src={`http://localhost:4000/${user.image}`} alt="lol" />
+              ) : (
+                <img src={avatar} alt="lol" />
+              )
             ) : (
               <div
                 style={{ height: "40px", width: "40px", margin: "0 5px" }}
@@ -35,11 +46,15 @@ const Message = (props) => {
       {/* {(props.seen) && <p className="seen">seen</p>} */}
       {props.lastSeen && (
         <div className="seen">
-          <img
-            className="seenImg"
-            src={`http://localhost:4000/${props.friendImage}`}
-            alt=""
-          />
+          {props.friendImage ? (
+            <img
+              className="seenImg"
+              src={`http://localhost:4000/${props.friendImage}`}
+              alt=""
+            />
+          ) : (
+            <img className="seenImg" src={avatar} alt="" />
+          )}
         </div>
       )}
     </>

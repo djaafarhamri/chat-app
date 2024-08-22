@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { RoomContext } from "../contexts/room";
 import { SocketContext } from "../contexts/socket";
 import { useDataSource } from "../hooks/useDataSource";
+import avatar from '../assets/avatar.jpeg'
 
 const Friend = (props) => {
   const [room, setRoom] = useContext(RoomContext);
@@ -38,7 +39,7 @@ const Friend = (props) => {
       className={`friend ${props.active === props.friend.username ? "active" : "inactive"}`}
     >
       <div className="friend-image">
-        <img src={`http://localhost:4000/${image}`} alt="" />
+      {image ? (<img src={`http://localhost:4000/${image}`} alt="lol" />) : (<img src={avatar} alt="lol" />)}
       </div>
       <div className="friend-info">
         <h3>{props.friend.username}</h3>

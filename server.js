@@ -31,23 +31,12 @@ mongoose
     throw new Error(err);
   });
 
-// app.use(cors())
+const corsOptions = {
+  origin: "http://localhost:5173", // specific origin
+  credentials: true, // to allow cookies and other credentials
+};
+app.use(cors(corsOptions));
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", req.get("Origin") || "*");
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
-  res.header("Access-Control-Expose-Headers", "Content-Length");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "X-HTTP-Method-Override, Accept, Authorization, Content-Type, X-Requested-With, Range"
-  );
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  } else {
-    return next();
-  }
-});
 //app.use(cors())
 app.use(cookieParser());
 app.use(express.json());
@@ -67,7 +56,7 @@ app.use(express.static("public"));
 //* socket connection
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:5173",
   },
 });
 var online_users = [];
@@ -90,7 +79,6 @@ io.on("connection", (socket) => {
     socket.join(data.room);
   });
   socket.on("sendMessage", (data) => {
-    console.log("message received: ", data.room);
     io.in(data.room).emit("receiveMessage", {
       sender: data.sender,
       message: data.message,
@@ -106,7 +94,6 @@ io.on("connection", (socket) => {
         sender: data.user,
       });
     }
-    console.log("sent to :");
   });
   socket.on("friend-request-accepted", (data) => {
     var friend_id = online_users.find(
@@ -117,11 +104,9 @@ io.on("connection", (socket) => {
         sender: data.user,
       });
     }
-    console.log("sent to :");
   });
   //seen
   socket.on("seen_user", (data) => {
-    console.log("seeeeeeeeeeeeen, ", data);
     io.in(data.room).emit("seen_server", {
       receiver: data.receiver,
       time: data.time,
@@ -165,11 +150,6 @@ app.use(
   })
 );
 
-var corsOptions = {
-  origin: "http://localhost:3000",
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-};
-app.use(cors(corsOptions));
 app.use(passport.initialize());
 app.use(passport.session());
 

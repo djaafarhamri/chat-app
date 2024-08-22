@@ -13,10 +13,10 @@ import FriendsList from "./FriendsList";
 import Picture from "./Picture";
 import { SocketContext } from "../contexts/socket";
 import { useDataSource } from "../hooks/useDataSource";
+import avatar from '../assets/avatar.jpeg'
 
 const Navbar = (props) => {
   const [user] = useContext(UserContext);
-  console.log("user from navbar", user);	
   const socket = useContext(SocketContext);
 
   //setShowChangeName
@@ -47,7 +47,6 @@ const Navbar = (props) => {
   ).data.friendRequests;
   useEffect(() => {
     socket.on("friend-request-received", (data) => {
-      console.log("friend request received");
       setRender(!render);
     });
     return () => {
@@ -57,7 +56,6 @@ const Navbar = (props) => {
 
   useEffect(() => {
     socket.on("friend-request-accepted-received", (data) => {
-      console.log("friend request received");
       setRender(!render);
     });
     return () => {
@@ -128,7 +126,7 @@ const Navbar = (props) => {
             )}
 
             <div className="navbar-user-img">
-              <img src={`http://localhost:4000/${user.image}`} alt="lol" />
+              {user?.image ? (<img src={`http://localhost:4000/${user.image}`} alt="lol" />) : (<img src={avatar} alt="lol" />)}
             </div>
             <div className="navbar-user-name">
               <h4>{user.username}</h4>

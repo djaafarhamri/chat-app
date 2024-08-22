@@ -7,7 +7,6 @@ const userSchema = mongoose.Schema(
   {
     image: {
       type: String,
-      default: path.join(__dirname, "uploads", "avatar.jpg"),
     },
     email: {
       type: String,

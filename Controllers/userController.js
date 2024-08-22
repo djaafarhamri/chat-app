@@ -35,7 +35,6 @@ module.exports.sign_in = async (req, res) => {
 };
 
 module.exports.check_user = (req, res) => {
-  console.log("curr: ", req.currUser);
   if (req.currUser) {
     res.status(200).json({ user: req.currUser });
   } else {
@@ -43,9 +42,13 @@ module.exports.check_user = (req, res) => {
   }
 };
 
-module.exports.logout = (req, res) => {
-  req.logout();
-  res.status(200).json("logout");
+module.exports.logout = (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    return res.status(200).json("logout");
+  });
 };
 
 module.exports.send_request = async (req, res) => {
@@ -82,14 +85,11 @@ module.exports.accept_request = async (req, res) => {
     if (userD.friends.some((e) => e.username === user.username)) {
       res.status(400).json("already friends");
     } else {
-      console.log("friend from friendR: ", friend);
-      console.log("user from friendR: ", user);
       await User.findOneAndUpdate(
         { username: user.username },
         { $addToSet: { friends: { ...friend, room } } },
         { new: true }
       );
-      console.log("friend: ", friend);
       await User.findOneAndUpdate(
         { username: friend.username },
         {
@@ -103,13 +103,11 @@ module.exports.accept_request = async (req, res) => {
         },
         { new: true }
       );
-      console.log("pls work");
       await User.findOneAndUpdate(
         { username: user.username },
         { $pull: { friendRequests: { username: friend.username } } },
         { new: true }
       );
-      console.log("pls work 2");
       await Chat.create({
         room,
         users: [{ username: user.username }, { username: friend.username }],
@@ -119,7 +117,6 @@ module.exports.accept_request = async (req, res) => {
   } catch (error) {
     res.status(400).json(error);
   }
-
 };
 
 module.exports.decline_request = async (req, res) => {
@@ -208,9 +205,7 @@ module.exports.change_username = async (req, res) => {
     editLastName,
     editUsername,
   } = req.body;
-  console.log("enter");
   if (editFirstName) {
-    console.log("enter if 1");
     await User.findOneAndUpdate(
       { username: currentUsername },
       {
@@ -220,7 +215,6 @@ module.exports.change_username = async (req, res) => {
     );
   }
   if (editLastName) {
-    console.log("enter if 2");
     await User.findOneAndUpdate(
       { username: currentUsername },
       {
@@ -230,7 +224,6 @@ module.exports.change_username = async (req, res) => {
     );
   }
   if (editUsername) {
-    console.log("enter if 3");
     await User.findOneAndUpdate(
       { username: currentUsername },
       {
@@ -239,7 +232,6 @@ module.exports.change_username = async (req, res) => {
       { new: true }
     );
   }
-  console.log("exit");
   res.status(200).json("success");
 };
 
@@ -247,7 +239,6 @@ module.exports.change_username = async (req, res) => {
 module.exports.change_picture = async (req, res) => {
   const { username } = req.body;
   const image = req.file.path;
-  console.log("image: ", image);
   const user = await User.findOneAndUpdate(
     { username },
     { image },

@@ -8,6 +8,7 @@ import { RoomContext } from "../contexts/room";
 import { SocketContext } from "../contexts/socket";
 import { useDataSource } from "../hooks/useDataSource";
 import { useRoom } from "../hooks/useRoom";
+import avatar from '../assets/avatar.jpeg'
 
 const Chat = (props) => {
   const [user] = useContext(UserContext);
@@ -99,7 +100,6 @@ const Chat = (props) => {
       }
     });
     socket.on("offline_friend", (data) => {
-      console.log("offline_friend", data)
       if (data.username === friend.username) {
         setIsOnline(false);
       }
@@ -120,7 +120,7 @@ const Chat = (props) => {
               props.setActiveChat(false);
               props.setActiveProfile(true);
             }} className="friend-chat-info">
-                <img src={`http://localhost:4000/${friendImage}`} alt="" />
+                {friendImage ?  (<img src={`http://localhost:4000/${friendImage}`} alt="" />):(<img src={avatar} alt="" />)}
               <div className="friend-info">
                 <h3>{friend.username}</h3>
                 {isOnline ? (
@@ -164,7 +164,6 @@ const Chat = (props) => {
                     msg.sender === user.username &&
                     (msg.time < friend.last_online || msg.time < timeSeen)
                     ) {
-                    console.log('last seen 2');
                     return (
                       <div key={index}>
                         <Message

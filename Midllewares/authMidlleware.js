@@ -23,21 +23,18 @@ const requireAuth = (req, res, next) => {
 // require admin
 const requireAdmin = (req, res, next) => {
   const token = req.cookies.jwt;
-  console.log('cookies: ', req.cookies.jwt);
   // check json web token exists & is verified
   if (token !== undefined) {
     jwt.verify(token, "test", async (err, decodedToken) => {
       let admin = await User.findById(decodedToken.id);
       if (err || admin.role !== "admin") {
         if (err) console.log(err.message);
-        console.log("not admin");
         res.status(400).json("not admin");
       } else {
         next();
       }
     });
   } else {
-    console.log("no token");
     res.status(400).json("no token found");
   }
 };
@@ -46,7 +43,6 @@ const requireManager = (req, res, next) => {
   const token = req.cookies.jwt;
   // check json web token exists & is verified
   if (token) {
-    console.log('token');
     jwt.verify(token, "test", async (err, decodedToken) => {
       let admin = await User.findById(decodedToken.id);
       if (!err && (admin.role === "vendeur" || admin.role === "admin")) {
@@ -64,7 +60,6 @@ const requireManager = (req, res, next) => {
 // check current user
 const checkUser = (req, res, next) => {
   const token = req.cookies.jwt;
-  console.log('token: ', token)
   if (token) {
     jwt.verify(token, "test", async (err, decodedToken) => {
       if (err) {
