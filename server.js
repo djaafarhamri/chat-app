@@ -32,7 +32,8 @@ mongoose
   });
 
 const corsOptions = {
-  origin: "https://chat-app.djaafarhamri.com", // specific origin
+  origin: ["https://chat-app.djaafarhamri.com", "https://www.chat-app.djaafarhamri.com", "http://localhost:5173"], // specific origin
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true, // to allow cookies and other credentials
 };
 app.use(cors(corsOptions));
