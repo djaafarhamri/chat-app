@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "build": "npm run --prefix ./views build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
