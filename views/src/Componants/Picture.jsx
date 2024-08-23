@@ -13,13 +13,13 @@ const Picture = (props) => {
     formData.append("image", file);
     formData.append("username", user.username);
     axios
-      .post(`${import.meta.env.VITE_API_URL}/api/user/change_picture`, formData, {
+      .post(`https://chat-app.djaafarhamri.com/api/user/change_picture`, formData, {
         withCredentials: true,
       })
       .then((res) => {
         var img = res.data.image;
         img.split('\\').join('/');
-        setImage(`${import.meta.env.VITE_API_URL}/${img}`);
+        setImage(`https://chat-app.djaafarhamri.com/${img}`);
         props.setShowPicture(false);
       })
       .catch((err) => {

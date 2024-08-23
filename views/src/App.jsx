@@ -12,6 +12,7 @@ import { socket } from "./contexts/socket";
 import Picture from "./Componants/Picture";
 
 function App() {
+  console.log(import.meta.env)
   return (
     <div className="App">
       <UserProvider>

@@ -10,7 +10,7 @@ const Friend = (props) => {
   const socket = useContext(SocketContext);
   const [isOnline, setIsOnline] = useState(false);
 
-  const image = useDataSource(`${import.meta.env.VITE_API_URL}/api/user/get_friend_image/${props.friend.username}`).data.image
+  const image = useDataSource(`https://chat-app.djaafarhamri.com/api/user/get_friend_image/${props.friend.username}`).data.image
 
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const Friend = (props) => {
       className={`friend ${props.active === props.friend.username ? "active" : "inactive"}`}
     >
       <div className="friend-image">
-      {image ? (<img src={`${import.meta.env.VITE_API_URL}/${image}`} alt="lol" />) : (<img src={avatar} alt="lol" />)}
+      {image ? (<img src={`https://chat-app.djaafarhamri.com/${image}`} alt="lol" />) : (<img src={avatar} alt="lol" />)}
       </div>
       <div className="friend-info">
         <h3>{props.friend.username}</h3>

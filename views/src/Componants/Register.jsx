@@ -11,7 +11,7 @@ const Register = () => {
 
   const sign_up = () => {
     axios
-      .post(`${import.meta.env.VITE_API_URL}/api/user/sign_up`, { username, email, password })
+      .post(`https://chat-app.djaafarhamri.com/api/user/sign_up`, { username, email, password })
       .then((res) => {
         navigate("/sign-in");
       })

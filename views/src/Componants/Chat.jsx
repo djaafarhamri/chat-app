@@ -47,7 +47,7 @@ const Chat = (props) => {
     };
   }, [room, setMessages, socket, user.username]);
   
-  const friendImage = useDataSource(`${import.meta.env.VITE_API_URL}/api/user/get_friend_image/${friend.username}`).data.image
+  const friendImage = useDataSource(`https://chat-app.djaafarhamri.com/api/user/get_friend_image/${friend.username}`).data.image
   // seen
   useEffect(() => {
     socket.on("seen_server", (data) => {
@@ -72,7 +72,7 @@ const Chat = (props) => {
       });
     }
     await axios
-      .post(`${import.meta.env.VITE_API_URL}/api/chat/send_message`, {
+      .post(`https://chat-app.djaafarhamri.com/api/chat/send_message`, {
         room,
         sender: user.username,
         message,
@@ -120,7 +120,7 @@ const Chat = (props) => {
               props.setActiveChat(false);
               props.setActiveProfile(true);
             }} className="friend-chat-info">
-                {friendImage ?  (<img src={`${import.meta.env.VITE_API_URL}/${friendImage}`} alt="" />):(<img src={avatar} alt="" />)}
+                {friendImage ?  (<img src={`https://chat-app.djaafarhamri.com/${friendImage}`} alt="" />):(<img src={avatar} alt="" />)}
               <div className="friend-info">
                 <h3>{friend.username}</h3>
                 {isOnline ? (
