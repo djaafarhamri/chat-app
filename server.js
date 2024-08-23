@@ -16,21 +16,7 @@ const userRoute = require("./Routes/userRoute");
 const chatRoute = require("./Routes/chatRoute");
 const session = require("express-session");
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", req.get("Origin") || new URL(req.get('Referer')).origin || "*");
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
-  res.header("Access-Control-Expose-Headers", "Content-Length");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "X-HTTP-Method-Override, Accept, Authorization, Content-Type, X-Requested-With, Range"
-  );
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  } else {
-    return next();
-  }
-});
+
 
 mongoose
   .connect(
@@ -56,6 +42,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://chat-app.djaafarhamri.com");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
+  res.header("Access-Control-Expose-Headers", "Content-Length");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-HTTP-Method-Override, Accept, Authorization, Content-Type, X-Requested-With, Range"
+  );
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  } else {
+    return next();
+  }
+});
 // app.use(
 //   session({
 //     name: "chat-user",
@@ -65,6 +67,28 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 //     maxAge: 24 * 60 * 60 * 1000, // 24 hours
 //   })
 // );
+
+
+
+app.use(
+  session({
+    secret: "Any normal Word", //decode or encode session
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 2 * 60 * 1000,
+    },
+  })
+);
+
+app.use("/api/user", userRoute);
+app.use("/api/chat", chatRoute);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
 
 //* socket connection
 const io = socket(server, {
@@ -157,20 +181,3 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
   });
 });
-
-app.use(
-  session({
-    secret: "Any normal Word", //decode or encode session
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 2 * 60 * 1000,
-    },
-  })
-);
-
-app.use("/api/user", userRoute);
-app.use("/api/chat", chatRoute);
-
-app.use(passport.initialize());
-app.use(passport.session());
