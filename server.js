@@ -44,7 +44,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://chat-app.djaafarhamri.com");
+  const origin = req.get('Origin') || new URL(req.get('Referer')).origin || '*';
+  res.header("Access-Control-Allow-Origin", origin);
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
   res.header("Access-Control-Expose-Headers", "Content-Length");
@@ -58,6 +59,10 @@ app.use((req, res, next) => {
     return next();
   }
 });
+
+app.get('/', (req, res) => {
+  res.send("Hello World!")
+})
 // app.use(
 //   session({
 //     name: "chat-user",
