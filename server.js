@@ -17,7 +17,6 @@ const chatRoute = require("./Routes/chatRoute");
 const session = require("express-session");
 
 
-
 mongoose
   .connect(
     `mongodb+srv://hamridjaafar:${process.env.MONGODB_PASSWORD}@cluster0.jj0ux.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
@@ -44,8 +43,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 app.use((req, res, next) => {
-  const origin = req.get('Origin') || new URL(req.get('Referer')).origin || '*';
-  res.header("Access-Control-Allow-Origin", origin);
+  res.header("Access-Control-Allow-Origin", '*');
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
   res.header("Access-Control-Expose-Headers", "Content-Length");
