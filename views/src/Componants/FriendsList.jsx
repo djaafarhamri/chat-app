@@ -11,7 +11,7 @@ const FriendsList = (props) => {
   const [friends, setFriends] = useContext(FriendContext);
   const remove = async (friend) => {
     await axios
-      .post(`http://localhost:4000/delete_friend`, {
+      .post(`${import.meta.env.VITE_API_URL}/api/user/delete_friend`, {
         user,
         friend,
       })

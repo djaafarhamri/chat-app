@@ -42,7 +42,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(express.static("public"));
+
 // app.use(
 //   session({
 //     name: "chat-user",
@@ -150,12 +150,13 @@ app.use(
   })
 );
 
+app.use('/api/user', userRoute);
+app.use('/api/chat', chatRoute);
+
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.static(path.join(__dirname, "views", "dist")));
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "dist", "index.html"));
 });
-
-app.use(userRoute);
-app.use(chatRoute);

@@ -12,7 +12,7 @@ const Profile = (props) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/get_friends/${user.username}`)
+      .get(`${import.meta.env.VITE_API_URL}/api/user/get_friends/${user.username}`)
       .then((res) => {
         setFriends(res.data.friends);
       })

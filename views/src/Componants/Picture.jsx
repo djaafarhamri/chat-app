@@ -13,13 +13,13 @@ const Picture = (props) => {
     formData.append("image", file);
     formData.append("username", user.username);
     axios
-      .post("http://localhost:4000/change_picture", formData, {
+      .post(`${import.meta.env.VITE_API_URL}/api/user/change_picture`, formData, {
         withCredentials: true,
       })
       .then((res) => {
         var img = res.data.image;
         img.split('\\').join('/');
-        setImage(`http://localhost:4000/${img}`);
+        setImage(`${import.meta.env.VITE_API_URL}/${img}`);
         props.setShowPicture(false);
       })
       .catch((err) => {

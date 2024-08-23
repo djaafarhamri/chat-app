@@ -3,13 +3,13 @@ import "./user.css";
 import avatar from "../assets/avatar.jpeg";
 const User = (props) => {
   const image = useDataSource(
-    `http://localhost:4000/get_friend_image/${props.friend.username}`
+    `${import.meta.env.VITE_API_URL}/api/user/get_friend_image/${props.friend.username}`
   ).data.image;
 
   return (
     <div className="user">
       {image ? (
-        <img src={`http://localhost:4000/${image}`} alt="" />
+        <img src={`${import.meta.env.VITE_API_URL}/${image}`} alt="" />
       ) : (
         <img src={avatar} alt="" />
       )}

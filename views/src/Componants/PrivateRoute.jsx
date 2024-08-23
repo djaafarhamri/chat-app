@@ -10,7 +10,7 @@ const PrivateRoute = ({ children }) => {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get("http://localhost:4000/check-user", { withCredentials: true })
+      .get(`${import.meta.env.VITE_API_URL}/api/user/check-user`, { withCredentials: true })
       .then((res) => {
         setIsLoading(false);
         setUser(res.data.user);

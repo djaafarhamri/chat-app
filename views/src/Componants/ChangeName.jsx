@@ -19,7 +19,7 @@ const ChangeName = (props) => {
     }
     await axios
       .post(
-        "http://localhost:4000/change_username",
+        `${import.meta.env.VITE_API_URL}/api/user/change_username`,
         {
           username,
           currentUsername: user.username,

@@ -21,7 +21,7 @@ export const useRoom = () => {
         time: Date.now(),
       });
       axios
-        .get(`http://localhost:4000/get_messages/${room}`)
+        .get(`${import.meta.env.VITE_API_URL}/api/chat/get_messages/${room}`)
         .then((res) => {
           setMessages(res.data.messages);
           setFriend(() => {
@@ -35,7 +35,7 @@ export const useRoom = () => {
         });
 
       axios
-        .post(`http://localhost:4000/update_last_online`, {
+        .post(`${import.meta.env.VITE_API_URL}/api/chat/update_last_online`, {
           room,
           username: user.username,
         })

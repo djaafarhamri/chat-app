@@ -12,7 +12,7 @@ const FriendRequests = (props) => {
   // accept request
   const accept = async (friend) => {
     await axios
-      .post(`http://localhost:4000/accept_request`, {
+      .post(`${import.meta.env.VITE_API_URL}/api/user/accept_request`, {
         user,
         friend,
       })
@@ -31,7 +31,7 @@ const FriendRequests = (props) => {
   // decline friend request
   const decline = async (friend) => {
     await axios
-      .post(`http://localhost:4000/decline_request`, {
+      .post(`${import.meta.env.VITE_API_URL}/api/user/decline_request`, {
         user,
         friend,
       })
