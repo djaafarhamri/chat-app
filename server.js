@@ -33,33 +33,21 @@ mongoose
   .catch((err) => {
     throw new Error(err);
   });
-
-app.options(
-  "*",
-  cors({
-    origin: [
-      "https://chat-app.djaafarhamri.com/",
-      "https://www.chat-app.djaafarhamri.com",
-      "http://localhost:5173",
-    ],
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true, // allow cookies and credentials
-    optionsSuccessStatus: 204, // some legacy browsers choke on 204
-  })
-); // Enable pre-flight across-the-board
-
-app.use(
-  cors({
-    origin: [
-      "https://chat-app.djaafarhamri.com/",
-      "https://www.chat-app.djaafarhamri.com",
-      "http://localhost:5173",
-    ],
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true, // allow cookies and credentials
-    optionsSuccessStatus: 204, // some legacy browsers choke on 204
-  })
-);
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", req.get("Origin") || "*");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
+  res.header("Access-Control-Expose-Headers", "Content-Length");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "X-HTTP-Method-Override, Accept, Authorization, Content-Type, X-Requested-With, Range"
+  );
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  } else {
+    return next();
+  }
+});
 //app.use(cors())
 app.use(cookieParser());
 app.use(express.json());
