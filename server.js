@@ -17,10 +17,13 @@ const chatRoute = require("./Routes/chatRoute");
 const session = require("express-session");
 
 mongoose
-  .connect(`mongodb+srv://hamridjaafar:${process.env.MONGODB_PASSWORD}@cluster0.jj0ux.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    `mongodb+srv://hamridjaafar:${process.env.MONGODB_PASSWORD}@cluster0.jj0ux.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => {
     console.log("data base connecte");
     server.listen(PORT, () => {
@@ -31,14 +34,18 @@ mongoose
     throw new Error(err);
   });
 
-  const corsOptions = {
-    origin: ["https://chat-app.djaafarhamri.com", "https://www.chat-app.djaafarhamri.com", "http://localhost:5173"],
+app.use(
+  cors({
+    origin: [
+      "https://chat-app.djaafarhamri.com",
+      "https://www.chat-app.djaafarhamri.com",
+      "http://localhost:5173",
+    ],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true, // allow cookies and credentials
     optionsSuccessStatus: 204, // some legacy browsers choke on 204
-  };
-  
-  app.use(cors(corsOptions));
+  })
+);
 //app.use(cors())
 app.use(cookieParser());
 app.use(express.json());
@@ -58,9 +65,13 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 //* socket connection
 const io = socket(server, {
   cors: {
-    origin: ["https://chat-app.djaafarhamri.com", "https://www.chat-app.djaafarhamri.com", "http://localhost:5173"],
+    origin: [
+      "https://chat-app.djaafarhamri.com",
+      "https://www.chat-app.djaafarhamri.com",
+      "http://localhost:5173",
+    ],
     methods: ["GET, POST"],
-    credentials: true
+    credentials: true,
   },
 });
 var online_users = [];
@@ -154,8 +165,8 @@ app.use(
   })
 );
 
-app.use('/api/user', userRoute);
-app.use('/api/chat', chatRoute);
+app.use("/api/user", userRoute);
+app.use("/api/chat", chatRoute);
 
 app.use(passport.initialize());
 app.use(passport.session());
