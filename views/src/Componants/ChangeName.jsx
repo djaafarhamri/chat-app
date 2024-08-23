@@ -19,7 +19,7 @@ const ChangeName = (props) => {
     }
     await axios
       .post(
-        `https://chat-app.djaafarhamri.com/api/user/change_username`,
+        `${import.meta.env.VITE_API_URL}/api/user/change_username`,
         {
           username,
           currentUsername: user.username,

@@ -42,7 +42,7 @@ const Navbar = (props) => {
   };
 
   const friendRequests = useDataSource(
-    `https://chat-app.djaafarhamri.com/api/user/get_friendRequests/${user.username}`,
+    `${import.meta.env.VITE_API_URL}/api/user/get_friendRequests/${user.username}`,
     render
   ).data.friendRequests;
   useEffect(() => {
@@ -66,7 +66,7 @@ const Navbar = (props) => {
 
   const logout = async () => {
     await axios
-      .get(`https://chat-app.djaafarhamri.com/api/user/logout`, { withCredentials: true })
+      .get(`${import.meta.env.VITE_API_URL}/api/user/logout`, { withCredentials: true })
       .then((res) => {
         socket.emit("logout", { user_id: user._id});
         navigate("/sign-in");
@@ -126,7 +126,7 @@ const Navbar = (props) => {
             )}
 
             <div className="navbar-user-img">
-              {user?.image ? (<img src={`https://chat-app.djaafarhamri.com/${user.image}`} alt="lol" />) : (<img src={avatar} alt="lol" />)}
+              {user?.image ? (<img src={`${import.meta.env.VITE_API_URL}/${user.image}`} alt="lol" />) : (<img src={avatar} alt="lol" />)}
             </div>
             <div className="navbar-user-name">
               <h4>{user.username}</h4>

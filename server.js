@@ -17,7 +17,7 @@ const chatRoute = require("./Routes/chatRoute");
 const session = require("express-session");
 
 mongoose
-  .connect("mongodb://0.0.0.0:27017/chat-app", {
+  .connect(`mongodb+srv://hamridjaafar:${process.env.MONGODB_PASSWORD}@cluster0.jj0ux.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -32,7 +32,7 @@ mongoose
   });
 
 const corsOptions = {
-  origin: "http://localhost:5173", // specific origin
+  origin: "https://chat-app.djaafarhamri.com", // specific origin
   credentials: true, // to allow cookies and other credentials
 };
 app.use(cors(corsOptions));
@@ -155,8 +155,3 @@ app.use('/api/chat', chatRoute);
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, "views", "dist")));
-
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "dist", "index.html"));
-});

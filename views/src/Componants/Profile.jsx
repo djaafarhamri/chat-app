@@ -12,7 +12,7 @@ const Profile = (props) => {
 
   useEffect(() => {
     axios
-      .get(`https://chat-app.djaafarhamri.com/api/user/get_friends/${user.username}`)
+      .get(`${import.meta.env.VITE_API_URL}/api/user/get_friends/${user.username}`)
       .then((res) => {
         setFriends(res.data.friends);
       })
