@@ -16,6 +16,22 @@ const userRoute = require("./Routes/userRoute");
 const chatRoute = require("./Routes/chatRoute");
 const session = require("express-session");
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", req.get("Origin") || new URL(req.get('Referer')).origin || "*");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
+  res.header("Access-Control-Expose-Headers", "Content-Length");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "X-HTTP-Method-Override, Accept, Authorization, Content-Type, X-Requested-With, Range"
+  );
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  } else {
+    return next();
+  }
+});
+
 mongoose
   .connect(
     `mongodb+srv://hamridjaafar:${process.env.MONGODB_PASSWORD}@cluster0.jj0ux.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
@@ -33,21 +49,7 @@ mongoose
   .catch((err) => {
     throw new Error(err);
   });
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", req.get("Origin") || "*");
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
-  res.header("Access-Control-Expose-Headers", "Content-Length");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "X-HTTP-Method-Override, Accept, Authorization, Content-Type, X-Requested-With, Range"
-  );
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  } else {
-    return next();
-  }
-});
+
 //app.use(cors())
 app.use(cookieParser());
 app.use(express.json());
