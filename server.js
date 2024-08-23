@@ -31,13 +31,14 @@ mongoose
     throw new Error(err);
   });
 
-const corsOptions = {
-  origin: ["https://chat-app.djaafarhamri.com", "https://www.chat-app.djaafarhamri.com", "http://localhost:5173"], // specific origin
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true, // to allow cookies and other credentials
-};
-app.use(cors(corsOptions));
-
+  const corsOptions = {
+    origin: ["https://chat-app.djaafarhamri.com", "https://www.chat-app.djaafarhamri.com", "http://localhost:5173"],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true, // allow cookies and credentials
+    optionsSuccessStatus: 204, // some legacy browsers choke on 204
+  };
+  
+  app.use(cors(corsOptions));
 //app.use(cors())
 app.use(cookieParser());
 app.use(express.json());
@@ -57,7 +58,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 //* socket connection
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: ["https://chat-app.djaafarhamri.com", "https://www.chat-app.djaafarhamri.com", "http://localhost:5173"],
+    methods: ["GET, POST"],
+    credentials: true
   },
 });
 var online_users = [];
