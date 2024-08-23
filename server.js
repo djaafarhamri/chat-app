@@ -34,10 +34,24 @@ mongoose
     throw new Error(err);
   });
 
+app.options(
+  "*",
+  cors({
+    origin: [
+      "https://chat-app.djaafarhamri.com/",
+      "https://www.chat-app.djaafarhamri.com",
+      "http://localhost:5173",
+    ],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true, // allow cookies and credentials
+    optionsSuccessStatus: 204, // some legacy browsers choke on 204
+  })
+); // Enable pre-flight across-the-board
+
 app.use(
   cors({
     origin: [
-      "https://chat-app.djaafarhamri.com",
+      "https://chat-app.djaafarhamri.com/",
       "https://www.chat-app.djaafarhamri.com",
       "http://localhost:5173",
     ],
