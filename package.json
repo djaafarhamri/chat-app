@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "build": "npm run --prefix ./views build",
+    "build": "npm run installViews && npm run --prefix ./views build",
+    "installViews": "npm --prefix ./views install ./views",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
