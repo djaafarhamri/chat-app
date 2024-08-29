@@ -12,7 +12,7 @@ const FindFriends = (props) => {
 
   const search = async (username) => {
     await axios
-      .get(`${import.meta.env.VITE_API_URL}/api/user/search_users/${username}`)
+      .get(`/api/user/search_users/${username}`)
       .then((res) => {
         setFriends(res.data.users);
       })
@@ -26,7 +26,7 @@ const FindFriends = (props) => {
       friend,
     });
     await axios
-      .post(`${import.meta.env.VITE_API_URL}/api/user/send_request`, {
+      .post(`/api/user/send_request`, {
         user,
         friend,
       })

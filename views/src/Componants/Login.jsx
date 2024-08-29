@@ -13,7 +13,7 @@ const Login = () => {
   const sign_in = () => {
     axios
       .post(
-        `${import.meta.env.VITE_API_URL}/api/user/sign_in`,
+        `/api/user/sign_in`,
         { email, password },
         { withCredentials: true }
       )

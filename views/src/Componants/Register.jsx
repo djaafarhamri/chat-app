@@ -10,7 +10,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   const sign_up = () => {
-    axios.post(`${import.meta.env.VITE_API_URL}/api/user/sign_up`, 
+    axios.post(`/api/user/sign_up`, 
       { username, email, password },
       {withCredentials: true}
     ).then((res) => {

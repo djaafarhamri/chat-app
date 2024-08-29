@@ -13,7 +13,7 @@ const Message = (props) => {
             {!props.reSent ? (
               props.friendImage ? (
                 <img
-                  src={`${import.meta.env.VITE_API_URL}/${props.friendImage}`}
+                  src={`/${props.friendImage}`}
                   alt="lol"
                 />
               ) : (
@@ -31,7 +31,7 @@ const Message = (props) => {
             <h4>{props.msg.message}</h4>
             {!props.reSent ? (
               user?.image ? (
-                <img src={`${import.meta.env.VITE_API_URL}/${user.image}`} alt="lol" />
+                <img src={`/${user.image}`} alt="lol" />
               ) : (
                 <img src={avatar} alt="lol" />
               )
@@ -49,7 +49,7 @@ const Message = (props) => {
           {props.friendImage ? (
             <img
               className="seenImg"
-              src={`${import.meta.env.VITE_API_URL}/${props.friendImage}`}
+              src={`/${props.friendImage}`}
               alt=""
             />
           ) : (
