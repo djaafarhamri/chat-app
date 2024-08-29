@@ -10,17 +10,12 @@ const Register = () => {
   const navigate = useNavigate();
 
   const sign_up = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/user/sign_up`, {
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify({ username, email, password }),
-    })
-      .then((res) => {
+    axios.post(`${import.meta.env.VITE_API_URL}/api/user/sign_up`, 
+      { username, email, password },
+      {withCredentials: true}
+    ).then((res) => {
         navigate("/sign-in");
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    }).catch(err => console.log(err))
   };
   return (
     <div

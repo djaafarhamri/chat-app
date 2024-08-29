@@ -5,6 +5,7 @@ const uuidv4 = require("uuid").v4;
 
 module.exports.sign_up = async (req, res) => {
   const { email, username, password } = req.body;
+  console.log(req.body)
   try {
     const user = await User.create({ email, username, password });
     res.status(200).json({ user });

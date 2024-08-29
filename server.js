@@ -4,17 +4,21 @@ const app = express();
 const passport = require("passport");
 const dotenv = require("dotenv");
 dotenv.config();
-const http = require("http");
 const cors = require("cors");
+const http =require("http")
+const server = http.createServer(app)
 const cookieParser = require("cookie-parser");
-const server = http.createServer(app);
-const socket = require("socket.io");
 const path = require("path");
 const mongoose = require("mongoose");
 const PORT = process.env.PORT || 4000;
 const userRoute = require("./Routes/userRoute");
 const chatRoute = require("./Routes/chatRoute");
 const session = require("express-session");
+
+app.use(cors({
+  origin: "https://chat-app.djaafarhamri.com",
+  credentials: true
+}))
 
 
 mongoose
@@ -27,9 +31,7 @@ mongoose
   )
   .then(() => {
     console.log("data base connecte");
-    server.listen(PORT, () => {
-      console.log("listening on PORT : ", PORT);
-    });
+   
   })
   .catch((err) => {
     throw new Error(err);
@@ -40,27 +42,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(express.static(path.join(__dirname, 'views', 'dist')));
 
-
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", '*');
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
-  res.header("Access-Control-Expose-Headers", "Content-Length");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-HTTP-Method-Override, Accept, Authorization, Content-Type, X-Requested-With, Range"
-  );
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  } else {
-    return next();
-  }
-});
-
-app.get('/', (req, res) => {
-  res.send("Hello World!")
-})
 // app.use(
 //   session({
 //     name: "chat-user",
@@ -90,19 +73,19 @@ app.use("/api/chat", chatRoute);
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "dist", "index.html"));
+});
 
-
+server.listen(PORT, () => {
+  console.log("listening on PORT : ", PORT);
+});
 
 //* socket connection
-const io = socket(server, {
+const io = require("socket.io")(server, {
+  pingTimeout: 60000,
   cors: {
-    origin: [
-      "https://chat-app.djaafarhamri.com",
-      "https://www.chat-app.djaafarhamri.com",
-      "http://localhost:5173",
-    ],
-    methods: ["GET, POST"],
-    credentials: true,
+    origin: "https://chat-app.djaafarhamri.com",
   },
 });
 var online_users = [];
@@ -184,3 +167,6 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
   });
 });
+
+
+module.exports = app
